@@ -29,11 +29,8 @@ onUnmounted(() => {
       <h1>CSTU Facility Booking</h1>
     </div>
     <div class="navbar-right" ref="dropdown">
-<<<<<<< Updated upstream
       <a @click="toggleDropdown" class="dropdown-a">User ID</a>
-=======
       <button @click="toggleDropdown" class="dropdown-btn">Menu</button>
->>>>>>> Stashed changes
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
           <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
         </ul>

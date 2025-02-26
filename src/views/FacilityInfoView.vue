@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    FACILITYINFO
+    <h2>FACILITYINFO</h2>
 </template>

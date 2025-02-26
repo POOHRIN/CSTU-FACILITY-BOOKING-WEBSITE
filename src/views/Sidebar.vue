@@ -1,5 +1,8 @@
 <template>
   <aside class="sidebar">
+    <ul>
+      <li><router-link to="/home">Home</router-link></li>
+    </ul>
     <ul class="facility">
       <li><router-link to="/home/meeting-room">Meeting Room</router-link></li>
       <li><router-link to="/home/presentation-room">Presentation Room</router-link></li>

@@ -40,7 +40,7 @@ import Sidebar from "../views/Sidebar.vue";
 
 .navbar {
   height: 60px;
-  background-color: #333;
+  background-color: rgb(190, 77, 0);
   color: white;
   display: flex;
   align-items: center;

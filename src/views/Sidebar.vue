@@ -20,7 +20,7 @@
 .sidebar {
   width: auto;
   height: 100%;
-  background: #222;
+  background-color: rgb(161, 65, 0);
   color: white;
   padding: 20px;
   display: flex;

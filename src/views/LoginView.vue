@@ -42,7 +42,7 @@ const handleLogin = () => {
 
 <style>
 body {
-    background-color: #db8446;
+    background-color: rgb(197, 94, 38);
     display: flex;
     justify-content: center;
     align-items: center;

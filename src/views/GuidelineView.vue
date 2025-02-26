@@ -1,5 +1,5 @@
 <script setup lang="ts"/>
 
 <template>
-    FACILITY
+    <h2>GUIDELINE</h2>
 </template>

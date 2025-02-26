@@ -5,9 +5,3 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <RouterView />
 </template>
-
-<style>
-html{
-  background-color: white;
-}
-</style>

@@ -1,27 +1,71 @@
 <template>
   <aside class="sidebar">
     <ul>
-      <li><router-link to="/home">Home</router-link></li>
+      <li class="home">
+        <router-link 
+          to="/home" 
+          :class="{ active: isActive('/home'), disabled: isActive('/home') }">
+          Home
+        </router-link>
+      </li>
     </ul>
     <ul class="facility">
-      <li><router-link to="/home/meeting-room">Meeting Room</router-link></li>
-      <li><router-link to="/home/presentation-room">Presentation Room</router-link></li>
+      <li>
+        <router-link 
+          to="/home/meeting-room" 
+          :class="{ active: isActive('/home/meeting-room'), disabled: isActive('/home/meeting-room') }">
+          Meeting Room
+        </router-link>
+      </li>
+      <li>
+        <router-link 
+          to="/home/presentation-room" 
+          :class="{ active: isActive('/home/presentation-room'), disabled: isActive('/home/presentation-room') }">
+          Presentation Room
+        </router-link>
+      </li>
     </ul>
     <ul>
-      <li><router-link to="/home/guideline">Guideline</router-link></li>
+      <li>
+        <router-link 
+          to="/home/guideline" 
+          :class="{ active: isActive('/home/guideline'), disabled: isActive('/home/guideline') }">
+          Guideline
+        </router-link>
+      </li>
     </ul>
     <ul>
-      <li><router-link to="/home/my-booking">my Booking</router-link></li>
+      <li>
+        <router-link 
+          to="/home/my-booking" 
+          :class="{ active: isActive('/home/my-booking'), disabled: isActive('/home/my-booking') }">
+          My Booking
+        </router-link>
+      </li>
     </ul>
   </aside>
 </template>
+
+<script>
+import { useRoute } from 'vue-router';
+
+export default {
+  setup() {
+    const route = useRoute();
+
+    const isActive = (path) => route.path === path;
+
+    return { isActive };
+  }
+};
+</script>
   
 <style scoped>
 .sidebar {
   width: auto;
   height: 100%;
-  background-color: rgb(161, 65, 0);
-  color: white;
+  background-color: rgb(217,217,217);
+  color: black;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -31,12 +75,14 @@
   bottom: 0;
 }
 .sidebar a {
-  color: white;
+  color: black;
   text-decoration: none;
   padding: 10px;
 }
 .sidebar a:hover {
-  background: #444;
+  background: rgb(193, 193, 193);
+  padding: 5px 10px;  
+  border-radius: 5px;
 }
 
 .sidebar ul {
@@ -45,11 +91,23 @@
 }
 
 .sidebar ul:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid black;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
 .sidebar ul, .sidebar li{
   padding: 1.6vh 0;
+}
+
+.active {
+  background-color: rgb(193, 193, 193);
+  cursor: default;
+  color: black;
+  padding: 5px 10px;  
+  border-radius: 5px;
+}
+
+.disabled {
+  pointer-events: none;
 }
 </style>

@@ -30,7 +30,6 @@ onUnmounted(() => {
     </div>
     <div class="navbar-right" ref="dropdown">
       <a @click="toggleDropdown" class="dropdown-a">User ID</a>
-      <button @click="toggleDropdown" class="dropdown-btn">Menu</button>
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
           <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
         </ul>
@@ -44,7 +43,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(190, 77, 0);
+  background-color: rgb(219,78,78);
   color: white;
   padding: 15px 20px;
 }

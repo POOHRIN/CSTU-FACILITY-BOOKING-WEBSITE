@@ -29,10 +29,8 @@ onUnmounted(() => {
       <h1>CSTU Facility Booking</h1>
     </div>
     <div class="navbar-right" ref="dropdown">
-      <button @click="toggleDropdown" class="dropdown-btn">Menu</button>
-
+      <a @click="toggleDropdown" class="dropdown-a">User ID</a>
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
-          <li class="disabled-item">Profile</li>
           <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
         </ul>
     </div>
@@ -45,7 +43,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background-color: rgb(219,78,78);
   color: white;
   padding: 15px 20px;
 }
@@ -55,17 +53,10 @@ onUnmounted(() => {
   margin-right: 1vw;
 }
 
-.dropdown-btn {
-  background: #0056b3;
+.dropdown-a {
   color: white;
   border: none;
-  padding: 8px 12px;
   cursor: pointer;
-  border-radius: 4px;
-}
-
-.dropdown-btn:hover {
-  background: #004494;
 }
 
 .dropdown-menu {

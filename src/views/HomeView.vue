@@ -34,13 +34,12 @@ import Sidebar from "../views/Sidebar.vue";
   display: flex;
   padding-left: 18vw;
   justify-content: center;
-  background-color: rgb(214, 214, 214);
+  background-color: rgb(254, 172, 99);
   color: black;
 }
 
 .navbar {
   height: 60px;
-  background-color: #333;
   color: white;
   display: flex;
   align-items: center;

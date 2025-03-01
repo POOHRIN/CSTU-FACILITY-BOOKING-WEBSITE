@@ -42,7 +42,7 @@ const handleLogin = () => {
 
 <style>
 body {
-    background-color: #db8446;
+    background-color: rgb(254,172,99);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,8 +61,8 @@ h2 {
 }
 
 .login-box {
-    background-color: rgb(214, 214, 214);
-    color: black;
+    background-color: rgb(219,78,78);
+    color: white;
     border-radius: 25px;
     width: 30vw;
     padding: 2vw;

@@ -17,7 +17,6 @@ const meetingRooms = ref([
 
 <template>
   <div class="meeting-room-container">
-    <h2 class="header">Meeting Room</h2>
     <div class="meeting-room-list">
       <router-link 
         v-for="(room, index) in meetingRooms" 
@@ -39,13 +38,6 @@ const meetingRooms = ref([
     background-color: rgb(254, 172, 99);
     padding: 20px;
     height: 100vh;
-  }
-  
-  .header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: black;
   }
   
   .meeting-room-list {

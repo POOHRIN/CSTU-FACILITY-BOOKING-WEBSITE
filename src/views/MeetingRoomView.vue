@@ -29,36 +29,39 @@ const meetingRooms = ref([
   </div>
 </template>
   
-  <style scoped>
-  .meeting-room-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(254, 172, 99);
-    padding: 20px;
-    height: 100vh;
-  }
-  
-  .meeting-room-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 80%;
-  }
-  
-  .room-card {
-    background: rgb(211, 211, 211);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    color: black;
-  }
-  .room-card:hover {
+<style scoped>
+.meeting-room-container {
+  width: 1775px; 
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(254, 172, 99);
+  padding: 40px;
+  height: 100vh;
+  margin-left: -200px; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+}
+
+.meeting-room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%; 
+}
+
+.room-card {
+  background: rgb(211, 211, 211);
+  padding: 60px; 
+  border-radius: 15px;
+  text-align: center;
+  font-size: 26px; 
+  /*font-weight: bold;*/
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.room-card:hover {
   background-color: rgb(193, 193, 193);
 }
-  
-  </style>  
+</style>

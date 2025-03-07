@@ -32,9 +32,11 @@
   max-height: 85vh;
   overflow-y: auto;
   position: absolute; 
-  left: 15vw; 
+  left: 10vw; 
   right: 0; 
-  width: calc(100% - 18vw); 
+  width: calc(100% - 12vw); 
+  overflow-y: auto; 
+  overflow-x: hidden; 
 }
 
 .guideline-container h2 {

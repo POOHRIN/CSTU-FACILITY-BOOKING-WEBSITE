@@ -5,8 +5,6 @@ import Guideline from '../views/GuideLineView.vue'
 import MyBooking from '../views/MyBookingView.vue'
 import MeetingRoom from '../views/MeetingRoomView.vue'
 import ActivityRoom from '../views/ActivityRoomView.vue'
-import PresentationRoom from '../views/PresentationRoomView.vue'
-import FacilityInfo from '../views/FacilityInfoView.vue'
 import MeetingRoomDetail from '../views/MeetingRoomDetail.vue'
 
 const router = createRouter({
@@ -44,16 +42,6 @@ const router = createRouter({
           path: 'activity-room',
           name: 'activity-room',
           component: ActivityRoom
-        },
-        {
-          path: 'presentation-room',
-          name: 'presentation-room',
-          component: PresentationRoom
-        },
-        {
-          path: 'facility-info',
-          name: 'facility-info',
-          component: FacilityInfo
         },
         {
           path: "/meeting-room/:roomId",

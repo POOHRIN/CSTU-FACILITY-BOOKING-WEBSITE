@@ -71,6 +71,7 @@ onUnmounted(() => {
   width: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  z-index: 9999;
 }
 
 .dropdown-menu li {

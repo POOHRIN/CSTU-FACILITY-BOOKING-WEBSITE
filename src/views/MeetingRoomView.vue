@@ -2,16 +2,16 @@
 import { ref } from "vue";
 
 const meetingRooms = ref([
-  { name: "ห้องประชุม 1", path: "ห้องประชุม-1" },
-  { name: "ห้องประชุม 2", path: "ห้องประชุม-2" },
-  { name: "LC2 - 301", path: "301" },
-  { name: "LC2 - 302", path: "302" },
-  { name: "LC2 - 303", path: "303" },
-  { name: "LC2 - 304", path: "304" },
-  { name: "LC2 - 305", path: "305" },
-  { name: "LC2 - 314", path: "314" },
-  { name: "LC2 - 315", path: "315" },
-  { name: "LC2 - 316", path: "316" }
+  { name: "ห้องประชุม 1", path: "ห้องประชุม 1" },
+  { name: "ห้องประชุม 2", path: "ห้องประชุม 2" },
+  { name: "LC2 - 301", path: "LC2 - 301" },
+  { name: "LC2 - 302", path: "LC2 - 302" },
+  { name: "LC2 - 303", path: "LC2 - 303" },
+  { name: "LC2 - 304", path: "LC2 - 304" },
+  { name: "LC2 - 305", path: "LC2 - 305" },
+  { name: "LC2 - 314", path: "LC2 - 314" },
+  { name: "LC2 - 315", path: "LC2 - 315" },
+  { name: "LC2 - 316", path: "LC2 - 316" }
 ]);
 </script>
 

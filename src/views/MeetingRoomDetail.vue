@@ -5,17 +5,19 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const roomId = route.params.roomId; 
 
+const selectedDate = ref("");
+
 const room = ref({
   name: `คุณกำลังดูข้อมูลของ : ${roomId}`,
-  capacity: "1 - 5",
+  capacity: "5 - 30",
   facilities: [
-    { icon: "📺", text: "TV" },
     { icon: "✏️", text: "White Board & Marker" },
     { icon: "📶", text: "WIFI" },
   ],
   bookings: [
-    { time: "12:00 - 15:00", status: "expired" },
-    { time: "12:00 - 15:00", status: "available" },
+    { time: "09:00 - 11:00", status: "expired" },
+    { time: "12:00 - 14:00", status: "available" },
+    { time: "15:00 - 17:00", status: "available" },
   ],
 });
 </script>
@@ -25,8 +27,9 @@ const room = ref({
     <div class="room-card">
       <h2 class="room-name">{{ room.name }}</h2>
 
+      <input type="date" v-model="selectedDate" class="date-picker" />
+
       <div class="booking-status">
-        <span class="expired-tag">Expired</span>
         <span
           v-for="(booking, index) in room.bookings"
           :key="index"
@@ -54,15 +57,15 @@ const room = ref({
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 50px); /* ลดช่องว่างจาก navbar น้อยลง */
-  min-height: 800px; /* กำหนดขั้นต่ำของความสูง */
+  height: calc(100vh - 50px); 
+  min-height: 800px; 
   padding: 20px;
   margin-left: 20px;
 }
 
 
 .room-card {
-  background: #e0e0e0;
+  background: rgb(211, 211, 211);
   padding: 30px;
   border-radius: 15px;
   width: 1700px;
@@ -70,6 +73,14 @@ const room = ref({
   margin-left: -200px; 
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
+}
+
+.date-picker {
+  font-size: 20px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 .room-name {
@@ -91,28 +102,20 @@ const room = ref({
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
 }
 
 .booking-tag.expired {
   background-color: #e57373;
   color: white;
   font-size: 24px;
+  cursor: default;
 }
 
 .booking-tag.available {
   background-color: #4caf50;
   color: white;
   font-size: 24px;
-}
-
-.expired-tag {
-  font-size: 24px;
-  background-color: #757575;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: bold;
+  cursor: pointer;
 }
 
 .capacity {
@@ -139,8 +142,11 @@ const room = ref({
   cursor: pointer;
   border-radius: 8px;
   font-size: 24px;
-  font-weight: bold;
   transition: 0.3s;
+}
+
+.booking-tag.available:hover {
+  background-color: #38803a;
 }
 
 .booking-btn:hover {

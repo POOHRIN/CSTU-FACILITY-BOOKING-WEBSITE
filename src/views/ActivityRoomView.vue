@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 const activityRooms = ref([
-  { name: "ห้องกิจกรรม 1", path: "ห้องกิจกรรม-1" }
+  { name: "ห้องกิจกรรม 1", path: "ห้องกิจกรรม 1" }
 ]);
 </script>
 

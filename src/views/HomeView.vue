@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Navbar from "../views/Navbar.vue";
 import Sidebar from "../views/Sidebar.vue";
-import Image1 from "@/assets/Test1.png";
+import Image1 from "@/assets/Test1.jpg";
 import Image2 from "@/assets/Test2.jpg";
 
 </script>

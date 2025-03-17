@@ -16,8 +16,15 @@ const route = useRoute();
       <Sidebar />
       <div class="content">
         <div class="image-container" v-show="route.path === '/home'">
-          <img :src="Image1" alt="Test Image 1" class="image"/>
-          <img :src="Image2" alt="Test Image 2" class="image"/>
+          <div class="image-wrapper">
+            <span class="image-text">Meeting Room</span>
+            <img :src="Image1" alt="Meeting Room" class="image" />
+        </div>
+        <div class="image-wrapper">
+          <span class="image-text">Activity Room</span>
+          <img :src="Image2" alt="Activity Room" class="image" />
+        </div>
+          
         </div>
         <router-view />
       </div>
@@ -58,13 +65,30 @@ const route = useRoute();
 
 .image-container {
   display: flex;
+  margin-left: -188px;
 }
 
 .image {
-  width: 1100px; 
-  height: auto;
+  width: 900px; 
+  height: 900px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  margin-left: -190px;
 }
 
+.image-wrapper {
+  position: relative;
+  width: 50%; 
+}
+
+.image-text {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
 </style>

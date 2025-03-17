@@ -19,9 +19,9 @@
       </li>
       <li>
         <router-link 
-          to="/home/presentation-room" 
-          :class="{ active: isActive('/home/presentation-room'), disabled: isActive('/home/presentation-room') }">
-          Presentation Room
+          to="/home/activity-room" 
+          :class="{ active: isActive('/home/activity-room'), disabled: isActive('/home/activity-room') }">
+          Activity Room
         </router-link>
       </li>
     </ul>
@@ -73,6 +73,7 @@ export default {
   top: 60px; 
   left: 0;
   bottom: 0;
+  z-index: 9999;
 }
 .sidebar a {
   color: black;

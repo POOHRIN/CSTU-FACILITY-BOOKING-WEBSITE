@@ -58,15 +58,13 @@ const route = useRoute();
 
 .image-container {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
 }
 
 .image {
-  width: 200px; 
+  width: 1100px; 
   height: auto;
-  border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  margin-left: -190px;
 }
 
 </style>

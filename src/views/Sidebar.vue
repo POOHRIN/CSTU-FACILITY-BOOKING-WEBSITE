@@ -73,6 +73,7 @@ export default {
   top: 60px; 
   left: 0;
   bottom: 0;
+  z-index: 9999;
 }
 .sidebar a {
   color: black;

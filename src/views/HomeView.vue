@@ -18,19 +18,23 @@ const route = useRoute();
         <div class="image-container" v-show="route.path === '/home'">
           <div class="image-wrapper">
             <span class="image-text">Meeting Room</span>
-            <img :src="Image1" alt="Meeting Room" class="image" />
-        </div>
-        <div class="image-wrapper">
-          <span class="image-text">Activity Room</span>
-          <img :src="Image2" alt="Activity Room" class="image" />
-        </div>
-          
+            <router-link to="/home/meeting-room">
+              <img :src="Image1" alt="Meeting Room" class="image" />
+            </router-link>
+          </div>
+          <div class="image-wrapper">
+            <span class="image-text">Activity Room</span>
+            <router-link to="/home/activity-room">
+              <img :src="Image2" alt="Activity Room" class="image" />
+            </router-link>
+          </div>
         </div>
         <router-view />
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .layout {
@@ -65,7 +69,7 @@ const route = useRoute();
 
 .image-container {
   display: flex;
-  margin-left: -188px;
+  margin-left: -10.5vw;
 }
 
 .image {
@@ -91,4 +95,13 @@ const route = useRoute();
   padding: 5px 10px;
   border-radius: 5px;
 }
+
+.image-wrapper img {
+  transition: opacity 0.1s ease-in-out;
+}
+
+.image-wrapper:hover img {
+  opacity: 0.7; 
+}
+
 </style>

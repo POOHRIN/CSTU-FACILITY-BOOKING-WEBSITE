@@ -12,7 +12,7 @@ const activityRooms = ref([
       <router-link 
         v-for="(room, index) in activityRooms" 
         :key="index" 
-        :to="`/activity-room/${room.path}`" 
+        :to="`/home/activity-room/${room.path}`" 
         class="room-card">
         {{ room.name }}
       </router-link>

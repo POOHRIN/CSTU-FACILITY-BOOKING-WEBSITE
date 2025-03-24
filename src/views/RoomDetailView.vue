@@ -14,39 +14,44 @@ const room = ref({
 const selectedDate = ref("");
 const minDate = ref(new Date().toISOString().split("T")[0]); 
 
-// Declare reactive variables using ref
 const startTime = ref(null);
 const endTime = ref(null);
 
-// Generate available times between 08:30 and 18:30 in 30-minute intervals
-const times = [];
+const times: string[] = [];
 let hour = 8;
 let minute = 30;
-while (hour < 19) {
-  if (minute === 30) {
-    times.push(`${String(hour).padStart(2, '0')}:30`);
-  } else {
-    times.push(`${String(hour).padStart(2, '0')}:00`);
-  }
+while (hour < 18 || (hour === 18 && minute === 0)) {  // Max start time 18:00
+  times.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
   minute = minute === 30 ? 0 : 30;
   if (minute === 0) hour++;
 }
 
-// Filtered end times based on the selected start time
-const filteredEndTimes = ref(times);
+const allEndTimes: string[] = [];
+hour = 8;
+minute = 30;
+while (hour < 19) {  // Max end time 18:30
+  allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
+  minute = minute === 30 ? 0 : 30;
+  if (minute === 0) hour++;
+}
 
-// Update the filtered end times when the start time changes
+const filteredEndTimes = ref<string[]>([]);
+
 const updateEndTimeOptions = () => {
-  if (!startTime.value) return;
-  const startTimeIndex = times.indexOf(startTime.value);
-  filteredEndTimes.value = times.slice(startTimeIndex + 1); // Ensure end time is greater than start time
+  if (!startTime.value) {
+    endTime.value = null;
+    filteredEndTimes.value = [];
+    return;
+  }
 
-  // Reset end time if it's invalid (less than or equal to the start time)
-  if (endTime.value && times.indexOf(endTime.value) <= startTimeIndex) {
-    endTime.value = null; // Reset end time
-    errorMessage.value = "End time must be greater than start time"; // Set error message
+  const startTimeIndex = allEndTimes.indexOf(startTime.value);
+  filteredEndTimes.value = allEndTimes.slice(startTimeIndex + 1); // Ensure end time > start time
+
+  if (endTime.value && allEndTimes.indexOf(endTime.value) <= startTimeIndex) {
+    endTime.value = null;
+    errorMessage.value = "End time must be greater than start time";
   } else {
-    errorMessage.value = ""; // Clear the error message if valid
+    errorMessage.value = "";
   }
 };
 </script>
@@ -58,95 +63,151 @@ const updateEndTimeOptions = () => {
 
       <input type="date" v-model="selectedDate" class="date-picker" :min="minDate" />
 
-      <div class="time-picker" v-if="selectedDate">
-        <select v-model="startTime" @change="updateEndTimeOptions">
-          <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
-        </select>
-    
-        <label for="end-time" class="picker">to</label>
-        <select v-model="endTime">
-          <option v-for="time in filteredEndTimes" :key="time" :value="time">{{ time }}</option>
-        </select>
+      <div class="time-picker" >
+        <div class="time-row">
+          <select v-model="startTime" @change="updateEndTimeOptions" :disabled="!selectedDate" class="time-dropdown">
+            <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
+          </select>
+        </div>
+
+        <div class="time-row">
+          <label>to</label>
+          <select v-model="endTime" :disabled="!startTime" class="time-dropdown">
+            <option v-for="time in filteredEndTimes" :key="time" :value="time">{{ time }}</option>
+          </select>
+        </div>
+
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
 
       <div class="button-wrapper">
-        <button class="booking-btn">Booking</button>
+        <button class="booking-btn" :disabled="!startTime || !endTime">Book Now</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Center everything */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 50px); 
-  min-height: 800px; 
+  height: 100vh;
   padding: 20px;
-  margin-left: 20px;
 }
 
-
+/* Room Card */
 .room-card {
-  position: relative;
-  background: rgb(211, 211, 211);
-  padding: 30px;
+  background: #f0f0f0;
+  padding: 2vmax;
   border-radius: 15px;
-  width: 1700px;
-  height: 85vh ;
-  margin-left: -200px; 
-  box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.2);
+  width: 450px;
+  box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
-  font-size: 2vb;
 }
 
+/* Room Title */
+.room-name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Date Picker */
 .date-picker {
-  font-size: 20px;
+  margin-bottom: 2vw;
+  font-size: 16px;
   padding: 10px;
-  margin-bottom: 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  width: 100%;
+  outline: none;
+  transition: 0.3s;
 }
 
-.room-name {
-  font-size: 32px;
-  font-weight: bold;
+.date-picker:hover {
+  border-color: #007bff;
+}
+
+/* Time Picker Section */
+.time-picker {
+  margin-bottom: 2vh;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Label */
+.time-row {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 15px;
+  text-align: left;
 }
 
-.capacity {
-  font-size: 24px;
-  margin-bottom: 10px;
-  left: 50%;
+.time-row {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #444;
 }
 
+/* Time Dropdown */
+.time-dropdown {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+  background: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.time-dropdown:hover {
+  border-color: #007bff;
+}
+
+/* Disable End Time Dropdown */
+.time-dropdown:disabled {
+  background: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Booking Button */
 .booking-btn {
-  background: #9e9e9e;
-  color: black;
-  padding: 16px 28px;
+  background: #007bff;
+  color: white;
+  padding: 14px 20px;
   border: none;
   cursor: pointer;
   border-radius: 8px;
-  font-size: 24px;
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
   transition: 0.3s;
-  bottom: 2vh;
 }
 
 .booking-btn:hover {
-  background: #616161;
-  color: white;
+  background: #0056b3;
 }
 
-.button-wrapper {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
+/* Disabled Booking Button */
+.booking-btn:disabled {
+  background: #d3d3d3;
+  color: #777;
+  cursor: not-allowed;
 }
-
-.picker {
-  margin: 0 1.5vw;
+label {
+  text-align: center;
+  margin: 1vh 0;
+  font-weight: bold;
 }
 </style>

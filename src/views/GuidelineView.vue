@@ -25,7 +25,7 @@
 <style scoped>
 .guideline-container {
   padding: 20px;
-  background-color: rgb(211, 211, 211);
+  background-color: #f0f0f0;
   color: black;
   border-radius: 10px;
   margin-top: 20px;

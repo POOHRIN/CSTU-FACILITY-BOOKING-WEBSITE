@@ -50,7 +50,7 @@ const meetingRooms = ref([
 }
 
 .room-card {
-  background: rgb(211, 211, 211);
+  background: #f0f0f0;
   padding: 60px; 
   border-radius: 15px;
   text-align: center;

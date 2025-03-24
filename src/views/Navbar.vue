@@ -21,6 +21,12 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
 });
+
+const userId = ref('');
+
+onMounted(() => {
+    userId.value = localStorage.getItem('userId') || '';
+});
 </script>
 
 <template>
@@ -29,7 +35,7 @@ onUnmounted(() => {
       <h1>CSTU Facility Booking</h1>
     </div>
     <div class="navbar-right" ref="dropdown">
-      <a @click="toggleDropdown" class="dropdown-a">User ID</a>
+      <a @click="toggleDropdown" class="dropdown-a">{{ userId }}</a>
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
           <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
         </ul>

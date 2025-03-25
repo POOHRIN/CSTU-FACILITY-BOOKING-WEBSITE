@@ -3,17 +3,20 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import Datepicker from 'vue3-datepicker';
 import VueTimepicker from 'vue-timepicker';
+import { activityRoomList, meetingRoomList } from "@/roomList";
 
 const route = useRoute();
+
+//Room
 const roomId = route.params.roomId; 
+const roomList = [...activityRoomList, ...meetingRoomList];
+const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" });
 
-const room = ref({
-  name: `${roomId}`,
-});
-
+//Date
 const selectedDate = ref("");
-const minDate = ref(new Date().toISOString().split("T")[0]); 
+const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]); 
 
+//Time
 const startTime = ref(null);
 const endTime = ref(null);
 
@@ -29,7 +32,7 @@ while (hour < 18 || (hour === 18 && minute === 0)) {  // Max start time 18:00
 const allEndTimes: string[] = [];
 hour = 8;
 minute = 30;
-while (hour < 19) {  // Max end time 18:30
+while (hour < 19) {  
   allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
   minute = minute === 30 ? 0 : 30;
   if (minute === 0) hour++;
@@ -88,7 +91,6 @@ const updateEndTimeOptions = () => {
 </template>
 
 <style scoped>
-/* Center everything */
 .container {
   display: flex;
   justify-content: center;
@@ -97,7 +99,6 @@ const updateEndTimeOptions = () => {
   padding: 20px;
 }
 
-/* Room Card */
 .room-card {
   background: #f0f0f0;
   padding: 2vmax;
@@ -107,7 +108,6 @@ const updateEndTimeOptions = () => {
   text-align: center;
 }
 
-/* Room Title */
 .room-name {
   font-size: 28px;
   font-weight: bold;
@@ -115,9 +115,8 @@ const updateEndTimeOptions = () => {
   color: #333;
 }
 
-/* Date Picker */
 .date-picker {
-  margin-bottom: 2vw;
+  margin-bottom: 2vh;
   font-size: 16px;
   padding: 10px;
   border-radius: 8px;
@@ -125,34 +124,29 @@ const updateEndTimeOptions = () => {
   width: 100%;
   outline: none;
   transition: 0.3s;
+  text-align: center;
 }
 
 .date-picker:hover {
   border-color: #007bff;
 }
 
-/* Time Picker Section */
 .time-picker {
   margin-bottom: 2vh;
   padding: 20px;
   border-radius: 10px;
 }
 
-/* Label */
 .time-row {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
-  text-align: left;
-}
-
-.time-row {
+  text-align: center;
   font-weight: bold;
   margin-bottom: 5px;
   color: #444;
 }
 
-/* Time Dropdown */
 .time-dropdown {
   font-size: 16px;
   padding: 10px;
@@ -162,26 +156,24 @@ const updateEndTimeOptions = () => {
   background: white;
   cursor: pointer;
   transition: 0.3s;
+  text-align: center;
 }
 
 .time-dropdown:hover {
   border-color: #007bff;
 }
 
-/* Disable End Time Dropdown */
 .time-dropdown:disabled {
   background: #e9ecef;
   cursor: not-allowed;
 }
 
-/* Error Message */
 .error-message {
   color: red;
   font-size: 14px;
   margin-top: 10px;
 }
 
-/* Booking Button */
 .booking-btn {
   background: #007bff;
   color: white;
@@ -199,7 +191,6 @@ const updateEndTimeOptions = () => {
   background: #0056b3;
 }
 
-/* Disabled Booking Button */
 .booking-btn:disabled {
   background: #d3d3d3;
   color: #777;
@@ -207,7 +198,7 @@ const updateEndTimeOptions = () => {
 }
 label {
   text-align: center;
-  margin: 1vh 0;
+  margin: 2vh 0;
   font-weight: bold;
 }
 </style>

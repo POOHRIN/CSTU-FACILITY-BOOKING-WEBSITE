@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+import { activityRoomList, meetingRoomList } from "@/roomList";
 
-const activityRooms = ref([
-  { name: "ห้องกิจกรรม 1", path: "ห้องกิจกรรม 1" }
-]);
+const route = useRoute();
+
+const activityRooms = ref(activityRoomList);
+const meetingRooms = ref(meetingRoomList);
+
 </script>
 
 <template>
-  <div class="activity-room-container">
-    <div class="activity-room-list">
+  <div class="room-container">
+    <div class="room-list" v-show="route.path === '/home/activity-room'">
       <router-link 
         v-for="(room, index) in activityRooms" 
         :key="index" 
@@ -17,11 +21,20 @@ const activityRooms = ref([
         {{ room.name }}
       </router-link>
     </div>
+    <div class="room-list" v-show="route.path === '/home/meeting-room'">
+      <router-link 
+        v-for="(room, index) in meetingRooms" 
+        :key="index" 
+        :to="`/home/meeting-room/${room.path}`" 
+        class="room-card">
+        {{ room.name }}
+      </router-link>
+      </div>
   </div>
 </template>
   
 <style scoped>
-.activity-room-container {
+.room-container {
   width: 1775px; 
   display: flex;
   flex-direction: column;
@@ -33,7 +46,7 @@ const activityRooms = ref([
   overflow-x: hidden; 
 }
 
-.activity-room-list {
+.room-list {
   display: flex;
   flex-direction: column;
   gap: 20px;

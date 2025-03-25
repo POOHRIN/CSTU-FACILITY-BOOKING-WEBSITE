@@ -3,9 +3,8 @@ import Home from '../views/HomeView.vue'
 import Login from '../views/LoginView.vue'
 import Guideline from '../views/GuideLineView.vue'
 import MyBooking from '../views/MyBookingView.vue'
-import MeetingRoom from '../views/MeetingRoomView.vue'
-import ActivityRoom from '../views/ActivityRoomView.vue'
-import RoomDetailView from '../views/RoomDetailView.vue'
+import RoomList from '../views/RoomListView.vue'
+import RoomDetail from '../views/RoomDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,22 +35,22 @@ const router = createRouter({
         {
           path: 'meeting-room',
           name: 'meeting-room',
-          component: MeetingRoom,
+          component: RoomList
         },
         {
           path: 'activity-room',
           name: 'activity-room',
-          component: ActivityRoom
+          component: RoomList
         },
         {
           path: "meeting-room/:roomId",
           name: "MeetingRoomDetail",
-          component: RoomDetailView
+          component: RoomDetail
         },
         {
           path: "activity-room/:roomId",
           name: "ActivityRoomDetail",
-          component: RoomDetailView
+          component: RoomDetail
         }
       ]
     }

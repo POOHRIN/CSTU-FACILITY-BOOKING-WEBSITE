@@ -1,60 +1,97 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import Datepicker from 'vue3-datepicker';
 import VueTimepicker from 'vue-timepicker';
 import { activityRoomList, meetingRoomList } from "@/roomList";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import type { BookingData } from "./bookingData";
 
 const route = useRoute();
 
+//Get database
+const bookings = ref<BookingData[]>([]);
+const fetchBookings = async () => {
+  const querySnapshot = await getDocs(collection(db, "bookings"));
+  bookings.value = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as BookingData[];
+};
+onMounted(fetchBookings);
+
+const addBooking = async (booking: BookingData) => {
+  try {
+    await addDoc(collection(db, "bookings"), booking);
+    console.log("Booking added:", booking);
+  } catch (error) {
+    console.error("Error adding booking:", error);
+  }
+};
+
 //Room
-const roomId = route.params.roomId; 
+const roomId = route.params.roomId; //Room Path Use for Database
 const roomList = [...activityRoomList, ...meetingRoomList];
-const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" });
+const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" }); //Room Name
 
 //Date
 const selectedDate = ref("");
-const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]); 
+const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]); //Make Date can't select today and tomorrow
 
 //Time
 const startTime = ref(null);
 const endTime = ref(null);
 
-const times: string[] = [];
+const times = []; //Start Time 8:30 - 18:00 
 let hour = 8;
 let minute = 30;
-while (hour < 18 || (hour === 18 && minute === 0)) {  // Max start time 18:00
+while (hour < 18 || (hour === 18 && minute === 0)) {
   times.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
   minute = minute === 30 ? 0 : 30;
   if (minute === 0) hour++;
 }
 
-const allEndTimes: string[] = [];
-hour = 8;
-minute = 30;
+const allEndTimes = []; //End Time 9:00 - 18:30
+hour = 9;
+minute = 0;
 while (hour < 19) {  
   allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
   minute = minute === 30 ? 0 : 30;
   if (minute === 0) hour++;
 }
 
-const filteredEndTimes = ref<string[]>([]);
+//Data
+const bookingData = ref([]);
+const bookRoom =  async () => {
 
-const updateEndTimeOptions = () => {
-  if (!startTime.value) {
-    endTime.value = null;
-    filteredEndTimes.value = [];
+  const userId = localStorage.getItem("userIdLogin");
+
+  if (!selectedDate.value || !startTime.value || !endTime.value) {
+    alert("Please select all fields before booking!");
     return;
   }
 
-  const startTimeIndex = allEndTimes.indexOf(startTime.value);
-  filteredEndTimes.value = allEndTimes.slice(startTimeIndex + 1); // Ensure end time > start time
+  const newBooking: BookingData = {
+    user_id: userId, 
+    room: String(roomId), 
+    date: selectedDate.value,
+    start_time: startTime.value,
+    end_time: endTime.value,
+  };
 
-  if (endTime.value && allEndTimes.indexOf(endTime.value) <= startTimeIndex) {
-    endTime.value = null;
-    errorMessage.value = "End time must be greater than start time";
-  } else {
-    errorMessage.value = "";
+  console.log(newBooking);
+
+  console.log(userId);
+
+  //Add booking to database
+  try {
+    await addBooking(newBooking);
+    alert("Booking Successful!");
+    fetchBookings(); 
+  } catch (error) {
+    console.error("Error adding booking:", error);
+    alert("Booking failed. Try again.");
   }
 };
 </script>
@@ -64,28 +101,44 @@ const updateEndTimeOptions = () => {
     <div class="room-card">
       <h2 class="room-name">{{ room.name }}</h2>
 
-      <input type="date" v-model="selectedDate" class="date-picker" :min="minDate" />
+      <input type="date" v-model="selectedDate" class="date-picker" :min="minDate" id="date"/>
 
       <div class="time-picker" >
         <div class="time-row">
-          <select v-model="startTime" @change="updateEndTimeOptions" :disabled="!selectedDate" class="time-dropdown">
-            <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
+          <select v-model="startTime" :disabled="!selectedDate" class="time-dropdown">
+            <option 
+              v-for="time in times" 
+              :key="time" 
+              :value="time" 
+            >
+              {{ time }}
+            </option>
           </select>
         </div>
 
         <div class="time-row">
           <label>to</label>
           <select v-model="endTime" :disabled="!startTime" class="time-dropdown">
-            <option v-for="time in filteredEndTimes" :key="time" :value="time">{{ time }}</option>
+            <option 
+              v-for="time in allEndTimes" 
+              :key="time" :value="time" 
+              :disabled="time <= startTime"
+              :class="{'disabled-option': time <= startTime}"
+            >
+              {{ time }}
+            </option>
           </select>
         </div>
-
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
 
       <div class="button-wrapper">
-        <button class="booking-btn" :disabled="!startTime || !endTime">Book Now</button>
+        <button class="booking-btn" :disabled="!startTime || !endTime" @click="bookRoom">Book Now</button>
       </div>
+      <ul>
+        <li v-for="booking in bookings" :key="booking.id">
+          {{ booking.room }} booked by user {{ booking.user_id }} for {{ booking.date }} from {{ booking.start_time }} to {{ booking.end_time }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -200,5 +253,9 @@ label {
   text-align: center;
   margin: 2vh 0;
   font-weight: bold;
+}
+.disabled-option{
+  color: rgb(146, 146, 146);
+  background-color: #d4d4d4;
 }
 </style>

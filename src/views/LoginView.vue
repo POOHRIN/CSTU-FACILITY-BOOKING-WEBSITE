@@ -9,7 +9,7 @@ const rememberMe = ref(false);
 
 const handleLogin = () => {
     if (userId.value && password.value) {
-        localStorage.setItem('userId', userId.value); // Store in localStorage
+        localStorage.setItem('userIdLogin', userId.value); // Store in localStorage
         router.push('/home'); // Redirect after login
     } else {
         alert('Please fill in all fields.');

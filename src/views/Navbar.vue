@@ -25,7 +25,7 @@ onUnmounted(() => {
 const userId = ref('');
 
 onMounted(() => {
-    userId.value = localStorage.getItem('userId') || '';
+    userId.value = localStorage.getItem('userIdLogin') || '';
 });
 </script>
 

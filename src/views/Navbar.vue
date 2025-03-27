@@ -27,6 +27,11 @@ const userId = ref('');
 onMounted(() => {
     userId.value = localStorage.getItem('userIdLogin') || '';
 });
+
+function logout() {
+  localStorage.removeItem('userIdLogin');
+  console.log(localStorage.getItem('userIdLogin'));
+}
 </script>
 
 <template>
@@ -37,7 +42,7 @@ onMounted(() => {
     <div class="navbar-right" ref="dropdown">
       <a @click="toggleDropdown" class="dropdown-a">{{ userId }}</a>
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
-          <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
+          <li><router-link to="/login" class="dropdown-link" @click="logout()">Logout</router-link></li>
         </ul>
     </div>
 </nav>

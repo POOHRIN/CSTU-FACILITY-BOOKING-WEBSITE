@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { ref, onMounted, computed } from "vue";
+import { query, collection, where, getDocs } from "firebase/firestore";
+import type { BookingData } from "./bookingData";
+import { db } from "../firebase";
+
+const userId = localStorage.getItem("userIdLogin");
+const bookings = ref<BookingData[]>([]);
+const myBookingCount = ref(0);
+
+const fetchBookingsSide = async () => {
+  try {
+    const q = query(
+      collection(db, "bookings"),
+      where("user_id", "==", userId)
+    );
+
+    const querySnapshot = await getDocs(q);
+    bookings.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as BookingData[];
+
+    myBookingCount.value = querySnapshot.size;
+  } catch (error) {
+    console.error("Error fetching filtered bookings:", error);
+  }
+};
+
+onMounted(() => {
+  fetchBookingsSide();
+});
+
+const route = useRoute();
+
+const isActive = (path: string) => route.path === path;
+</script>
+
 <template>
   <aside class="sidebar">
     <ul>
@@ -40,25 +79,14 @@
           to="/home/my-booking" 
           :class="{ active: isActive('/home/my-booking'), disabled: isActive('/home/my-booking') }">
           My Booking
+          <span :class="{'booking-count': true, 'red': myBookingCount === 0, 'green': myBookingCount >= 1}">
+            {{ myBookingCount }}
+          </span>
         </router-link>
       </li>
     </ul>
   </aside>
 </template>
-
-<script>
-import { useRoute } from 'vue-router';
-
-export default {
-  setup() {
-    const route = useRoute();
-
-    const isActive = (path) => route.path === path;
-
-    return { isActive };
-  }
-};
-</script>
   
 <style scoped>
 .sidebar {
@@ -110,5 +138,28 @@ export default {
 
 .disabled {
   pointer-events: none;
+}
+
+.booking-count {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 25px;
+  margin-left: 10px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.red {
+  background-color: rgb(226, 104, 104);
+  color: rgb(255, 0, 0);
+}
+
+.green {
+  background-color: rgb(127, 202, 127);
+  color: rgb(1, 103, 1);
+  line-height: 1;
 }
 </style>

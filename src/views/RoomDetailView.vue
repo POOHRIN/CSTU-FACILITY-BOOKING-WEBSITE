@@ -1,26 +1,126 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import Datepicker from 'vue3-datepicker';
-import VueTimepicker from 'vue-timepicker';
+import { ref, onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { watch } from "vue";
 import { activityRoomList, meetingRoomList } from "@/roomList";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import type { BookingData } from "./bookingData";
 
 const route = useRoute();
+const router = useRouter();
+const userId = localStorage.getItem("userIdLogin");
 
-//Get database
+// Room and Date Setup
+const roomId = route.params.roomId; 
+const roomList = [...activityRoomList, ...meetingRoomList];
+const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" });
+
+const selectedDate = ref("");
+const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
+
+// Fetch bookings
 const bookings = ref<BookingData[]>([]);
 const fetchBookings = async () => {
-  const querySnapshot = await getDocs(collection(db, "bookings"));
-  bookings.value = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as BookingData[];
-};
-onMounted(fetchBookings);
+  if (!selectedDate.value) return;
 
+  try {
+    const q = query(
+      collection(db, "bookings"),
+      where("room", "==", roomId),
+      where("date", "==", selectedDate.value)
+    );
+
+    const querySnapshot = await getDocs(q);
+    bookings.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as BookingData[];
+  } catch (error) {
+    console.error("Error fetching filtered bookings:", error);
+  }
+};
+
+watch(selectedDate, () => {
+  fetchBookings();
+});
+
+// Time selection logic
+const startTime = ref(null);
+const endTime = ref(null);
+
+const times = [];
+let hour = 8;
+let minute = 30;
+while (hour < 18 || (hour === 18 && minute === 0)) {
+  times.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
+  minute = minute === 30 ? 0 : 30;
+  if (minute === 0) hour++;
+}
+
+const allEndTimes = [];
+hour = 9;
+minute = 0;
+while (hour < 19) {  
+  allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
+  minute = minute === 30 ? 0 : 30;
+  if (minute === 0) hour++;
+}
+
+const bookedTimes = computed(() => {
+  const disabledTimes = new Set<string>();
+
+  bookings.value.forEach(booking => {
+    let [startHour, startMinute] = booking.start_time.split(":").map(Number);
+    let [endHour, endMinute] = booking.end_time.split(":").map(Number);
+
+    while (startHour < endHour || (startHour === endHour && startMinute < endMinute)) {
+      disabledTimes.add(`${String(startHour).padStart(2, "0")}:${startMinute === 30 ? "30" : "00"}`);
+      startMinute += 30;
+      if (startMinute === 60) {
+        startMinute = 0;
+        startHour++;
+      }
+    }
+  });
+
+  return disabledTimes;
+});
+
+const disableEndTimes = computed(() => {
+  if (!startTime.value) return new Set();
+
+  let firstBookingAfterStart = null;
+  const disabledSet = new Set<string>();
+
+  const validBookings = bookings.value.filter(booking => booking.start_time > startTime.value);
+
+  if (validBookings.length > 0) {
+    validBookings.sort((a, b) => a.start_time.localeCompare(b.start_time));
+    firstBookingAfterStart = validBookings[0];
+  }
+
+  if (firstBookingAfterStart) {
+    let [firstEndHour, firstEndMinute] = firstBookingAfterStart.end_time.split(":").map(Number);
+    let firstEndTime = `${String(firstEndHour).padStart(2, "0")}:${firstEndMinute === 30 ? "30" : "00"}`;
+
+    allEndTimes.forEach(time => {
+      if (time >= firstEndTime) {
+        disabledSet.add(time);
+      }
+    });
+  }
+
+  allEndTimes.forEach(time => {
+    if (time <= startTime.value) {
+      disabledSet.add(time);
+    }
+  });
+
+  return disabledSet;
+});
+
+// Add booking to database
 const addBooking = async (booking: BookingData) => {
   try {
     await addDoc(collection(db, "bookings"), booking);
@@ -30,42 +130,7 @@ const addBooking = async (booking: BookingData) => {
   }
 };
 
-//Room
-const roomId = route.params.roomId; //Room Path Use for Database
-const roomList = [...activityRoomList, ...meetingRoomList];
-const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" }); //Room Name
-
-//Date
-const selectedDate = ref("");
-const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]); //Make Date can't select today and tomorrow
-
-//Time
-const startTime = ref(null);
-const endTime = ref(null);
-
-const times = []; //Start Time 8:30 - 18:00 
-let hour = 8;
-let minute = 30;
-while (hour < 18 || (hour === 18 && minute === 0)) {
-  times.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
-  minute = minute === 30 ? 0 : 30;
-  if (minute === 0) hour++;
-}
-
-const allEndTimes = []; //End Time 9:00 - 18:30
-hour = 9;
-minute = 0;
-while (hour < 19) {  
-  allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
-  minute = minute === 30 ? 0 : 30;
-  if (minute === 0) hour++;
-}
-
-//Data
-const bookingData = ref([]);
 const bookRoom =  async () => {
-
-  const userId = localStorage.getItem("userIdLogin");
 
   if (!selectedDate.value || !startTime.value || !endTime.value) {
     alert("Please select all fields before booking!");
@@ -80,21 +145,18 @@ const bookRoom =  async () => {
     end_time: endTime.value,
   };
 
-  console.log(newBooking);
-
-  console.log(userId);
-
-  //Add booking to database
   try {
     await addBooking(newBooking);
     alert("Booking Successful!");
-    fetchBookings(); 
+    router.push("/"); 
+    window.location.reload();
   } catch (error) {
     console.error("Error adding booking:", error);
     alert("Booking failed. Try again.");
   }
 };
 </script>
+
 
 <template>
   <div class="container">
@@ -110,6 +172,8 @@ const bookRoom =  async () => {
               v-for="time in times" 
               :key="time" 
               :value="time" 
+              :disabled="bookedTimes.has(time)"
+              :class="{'disabled-option': bookedTimes.has(time)}"
             >
               {{ time }}
             </option>
@@ -121,24 +185,20 @@ const bookRoom =  async () => {
           <select v-model="endTime" :disabled="!startTime" class="time-dropdown">
             <option 
               v-for="time in allEndTimes" 
-              :key="time" :value="time" 
-              :disabled="time <= startTime"
-              :class="{'disabled-option': time <= startTime}"
+              :key="time" 
+              :value="time"
+              :disabled="disableEndTimes.has(time)"
+              :class="{'disabled-option': disableEndTimes.has(time)}"
             >
               {{ time }}
             </option>
-          </select>
+        </select>
         </div>
       </div>
 
       <div class="button-wrapper">
         <button class="booking-btn" :disabled="!startTime || !endTime" @click="bookRoom">Book Now</button>
       </div>
-      <ul>
-        <li v-for="booking in bookings" :key="booking.id">
-          {{ booking.room }} booked by user {{ booking.user_id }} for {{ booking.date }} from {{ booking.start_time }} to {{ booking.end_time }}
-        </li>
-      </ul>
     </div>
   </div>
 </template>

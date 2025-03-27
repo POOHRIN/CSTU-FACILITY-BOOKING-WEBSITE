@@ -21,6 +21,7 @@ const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()
 
 // Fetch bookings
 const bookings = ref<BookingData[]>([]);
+const bookingsUser = ref<BookingData[]>([]);
 const fetchBookings = async () => {
   if (!selectedDate.value) return;
 
@@ -41,8 +42,28 @@ const fetchBookings = async () => {
   }
 };
 
+const fetchBookingsUser = async () => {
+
+  try {
+    const q = query(
+      collection(db, "bookings"),
+      where("user_id", "==", userId),
+      where("date", "==", selectedDate.value)
+    );
+
+    const querySnapshot = await getDocs(q);
+    bookingsUser.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as BookingData[];
+  } catch (error) {
+    console.error("Error fetching filtered bookings:", error);
+  }
+};
+
 watch(selectedDate, () => {
   fetchBookings();
+  fetchBookingsUser();
 });
 
 // Time selection logic
@@ -70,7 +91,7 @@ while (hour < 19) {
 const bookedTimes = computed(() => {
   const disabledTimes = new Set<string>();
 
-  bookings.value.forEach(booking => {
+  [...bookings.value, ...bookingsUser.value].forEach(booking => {
     let [startHour, startMinute] = booking.start_time.split(":").map(Number);
     let [endHour, endMinute] = booking.end_time.split(":").map(Number);
 

@@ -3,9 +3,11 @@ import { ref, onMounted, computed } from "vue";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import type { BookingData } from "./bookingData";
 import { db } from "../firebase";
+import { activityRoomList, meetingRoomList } from "@/roomList";
 
 const userId = localStorage.getItem("userIdLogin");
 const bookings = ref<BookingData[]>([]);
+const roomList = [...activityRoomList, ...meetingRoomList];
 
 const fetchBookings = async () => {
   try {
@@ -24,7 +26,20 @@ const fetchBookings = async () => {
   }
 };
 
-fetchBookings();
+onMounted(() => {
+  fetchBookings();
+});
+
+const roomConvert = (room: string) => {
+  const roomObj = roomList.find(r => r.path === room);
+  return roomObj ? roomObj.name : "Unknown Room";
+};
+
+const dateConvert = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const formattedDate = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  return formattedDate.replace(" ", "/").replace(" ", "/");
+}
 </script>
 
 <template>
@@ -34,8 +49,8 @@ fetchBookings();
         v-for="booking in bookings" 
         :key="booking.id"
         class="book-card">
-        <p class="book-room">{{ booking.room }}</p>
-        <p class="book-time">{{ booking.start_time }} to {{ booking.end_time }}</p> 
+        <p class="book-room">{{ roomConvert(booking.room) }}</p>
+        <p class="book-time">{{ dateConvert(booking.date) }} {{ booking.start_time }}น. - {{ booking.end_time }}น.</p> 
       </div>
     </div>
   </div>
@@ -75,10 +90,10 @@ fetchBookings();
 
 .book-room{
     font-weight: bold;
-    font-size: 2vw;
+    font-size: 1.8vmax;
 }
 
 .book-time{
-    font-size: 1.2  vw;
+    font-size: 1vmax;
 }
 </style>

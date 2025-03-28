@@ -90,7 +90,7 @@ const isActive = (path: string) => route.path === path;
   
 <style scoped>
 .sidebar {
-  width: auto;
+  width: 180px;
   height: 100%;
   background-color: rgb(217,217,217);
   color: black;

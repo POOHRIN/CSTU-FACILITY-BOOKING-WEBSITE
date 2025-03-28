@@ -58,13 +58,12 @@ const dateConvert = (dateStr: string) => {
 
 <style scoped>
 .book-container {
-  width: 1775px; 
+  width: 100%; 
   display: flex;
   flex-direction: column;
   background-color: rgb(254, 172, 99);
-  padding: 40px;
+  padding: 1vmax;
   height: 100vh;
-  margin-left: -200px; 
   overflow-y: auto; 
   overflow-x: hidden; 
 }
@@ -73,12 +72,12 @@ const dateConvert = (dateStr: string) => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 100%; 
+  width: 100%;
 }
 
 .book-card {
   background: #f0f0f0;
-  padding: 2.3vmax; 
+  padding: 2vmax; 
   border-radius: 15px;
   text-align: center;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);

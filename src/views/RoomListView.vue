@@ -35,13 +35,12 @@ const meetingRooms = ref(meetingRoomList);
   
 <style scoped>
 .room-container {
-  width: 1775px; 
+  width: 100%; 
   display: flex;
   flex-direction: column;
   background-color: rgb(254, 172, 99);
-  padding: 40px;
+  padding: 1vmax;
   height: 100vh;
-  margin-left: -200px; 
   overflow-y: auto; 
   overflow-x: hidden; 
 }
@@ -59,7 +58,7 @@ const meetingRooms = ref(meetingRoomList);
   border-radius: 15px;
   text-align: center;
   font-size: 26px; 
-  /*font-weight: bold;*/
+  font-weight: bold;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);
   color: black;
   transition: background-color 0.3s ease;

@@ -53,7 +53,7 @@ const route = useRoute();
 .content {
   flex-grow: 1; 
   display: flex;
-  padding-left: 18vw;
+  padding-left: 180px;
   justify-content: center;
   background-color: rgb(254, 172, 99);
   color: black;
@@ -69,23 +69,25 @@ const route = useRoute();
 
 .image-container {
   display: flex;
-  margin-left: -10.5vw;
+  width: 100%;
 }
 
-.image {
-  width: 900px; 
-  height: 900px;
+.image{
+  width: 98%; 
+  height: 98%;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  margin: 1vmax;
 }
 
-.image-wrapper {
+.image-wrapper{
   position: relative;
-  width: 50%; 
+  width: 98%; 
+  height: 98%;
 }
 
 .image-text {
   position: absolute;
-  top: 10px;
+  top: 5vh;
   left: 50%;
   transform: translateX(-50%);
   font-size: 20px;

@@ -40,7 +40,7 @@ const meetingRooms = ref(meetingRoomList);
   flex-direction: column;
   background-color: rgb(254, 172, 99);
   padding: 1vmax;
-  height: 100vh;
+  height: auto;
   overflow-y: auto; 
   overflow-x: hidden; 
 }

@@ -11,11 +11,12 @@ const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
-// Room and Date Setup
+// Room
 const roomId = route.params.roomId; 
 const roomList = [...activityRoomList, ...meetingRoomList];
 const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" });
 
+//Date
 const selectedDate = ref("");
 const minDate = ref(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
 
@@ -169,8 +170,10 @@ const bookRoom =  async () => {
   try {
     await addBooking(newBooking);
     alert("Booking Successful!");
-    router.push("/"); 
-    window.location.reload();
+    router.replace("/home");
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   } catch (error) {
     console.error("Error adding booking:", error);
     alert("Booking failed. Try again.");

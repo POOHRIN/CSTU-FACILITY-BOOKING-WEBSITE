@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, orderBy } from "firebase/firestore";
 import type { BookingData } from "./bookingData";
 import { db } from "../firebase";
 import { activityRoomList, meetingRoomList } from "@/roomList";
@@ -13,14 +13,25 @@ const fetchBookings = async () => {
   try {
     const q = query(
       collection(db, "bookings"),
-      where("user_id", "==", userId )
+      where("user_id", "==", userId ),
+      orderBy("date", "asc") 
     );
 
     const querySnapshot = await getDocs(q);
-    bookings.value = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as BookingData[];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset to start of the day
+
+    bookings.value = querySnapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }) as BookingData)
+      .filter(booking => {
+        const bookingDate = new Date(booking.date);
+        bookingDate.setHours(0, 0, 0, 0); // Reset to start of the day
+        return bookingDate >= today;
+      });
+
   } catch (error) {
     console.error("Error fetching filtered bookings:", error);
   }
@@ -63,7 +74,7 @@ const dateConvert = (dateStr: string) => {
   flex-direction: column;
   background-color: rgb(254, 172, 99);
   padding: 1vmax;
-  height: 100vh;
+  height: auto;
   overflow-y: auto; 
   overflow-x: hidden; 
 }

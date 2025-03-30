@@ -53,7 +53,7 @@ const route = useRoute();
 .content {
   flex-grow: 1; 
   display: flex;
-  padding-left: 180px;
+  padding-left: 180px; /*padding from sidebar*/
   justify-content: center;
   background-color: rgb(254, 172, 99);
   color: black;
@@ -70,6 +70,7 @@ const route = useRoute();
 .image-container {
   display: flex;
   width: 100%;
+  padding-right: 1.5vw;
 }
 
 .image{

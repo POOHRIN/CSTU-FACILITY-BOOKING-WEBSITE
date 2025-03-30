@@ -17,12 +17,21 @@ const fetchBookingsSide = async () => {
     );
 
     const querySnapshot = await getDocs(q);
-    bookings.value = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as BookingData[];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset to start of the day
 
-    myBookingCount.value = querySnapshot.size;
+    bookings.value = querySnapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }) as BookingData)
+      .filter(booking => {
+        const bookingDate = new Date(booking.date);
+        bookingDate.setHours(0, 0, 0, 0); // Reset to start of the day
+        return bookingDate >= today;
+      });
+
+    myBookingCount.value = bookings.value.length;
   } catch (error) {
     console.error("Error fetching filtered bookings:", error);
   }

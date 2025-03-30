@@ -37,7 +37,8 @@ function logout() {
 <template>
   <nav class="navbar">
     <div class="navbar-left">
-      <h1>CSTU Facility Booking</h1>
+      <h1>CSTU Facility Booking </h1>
+      <span v-if="userId === 'admin'" class="admin"> ADMIN</span>
     </div>
     <div class="navbar-right" ref="dropdown">
       <a @click="toggleDropdown" class="dropdown-a">{{ userId }}</a>
@@ -92,5 +93,18 @@ function logout() {
 
 .dropdown-menu li:last-child {
   border-bottom: none;
+}
+
+.navbar-left h1 {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.admin{
+  color: gold;
+  font-size: 12px;
+  margin-left: 5px;
 }
 </style>

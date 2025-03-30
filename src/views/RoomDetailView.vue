@@ -11,6 +11,10 @@ const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
+if (userId == "admin") {
+    router.push('/admin-home');
+}
+
 // Room
 const roomId = route.params.roomId; 
 const roomList = [...activityRoomList, ...meetingRoomList];

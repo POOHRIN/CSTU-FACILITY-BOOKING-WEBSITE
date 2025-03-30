@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { ref, onMounted, computed } from "vue";
 import { query, collection, where, getDocs, orderBy } from "firebase/firestore";
 import type { BookingData } from "./bookingData";
@@ -8,6 +9,12 @@ import { activityRoomList, meetingRoomList } from "@/roomList";
 const userId = localStorage.getItem("userIdLogin");
 const bookings = ref<BookingData[]>([]);
 const roomList = [...activityRoomList, ...meetingRoomList];
+
+const router = useRouter();
+
+if (userId == "admin") {
+    router.push('/admin-home');
+}
 
 const fetchBookings = async () => {
   try {

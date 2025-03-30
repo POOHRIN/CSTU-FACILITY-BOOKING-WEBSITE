@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { activityRoomList, meetingRoomList } from "@/roomList";
 
 const route = useRoute();
+const router = useRouter();
 
 const activityRooms = ref(activityRoomList);
 const meetingRooms = ref(meetingRoomList);
+
+if (userId == "admin") {
+    router.push('/admin-home');
+}
 
 </script>
 

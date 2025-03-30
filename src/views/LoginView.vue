@@ -10,7 +10,15 @@ const rememberMe = ref(false);
 const handleLogin = () => {
     if (userId.value && password.value) {
         localStorage.setItem('userIdLogin', userId.value); // Store in localStorage
-        router.push('/home'); // Redirect after login
+        if (userId.value == "admin"){
+            if(password.value == "admin123"){
+                router.push('/admin-home')
+            }else{
+                alert("Incorrected Password");
+            }
+        }else{
+            router.push('/home');
+        } 
     } else {
         alert('Please fill in all fields.');
     }
@@ -27,10 +35,6 @@ const handleLogin = () => {
                 </div>
                 <div class="login-data">
                     <input v-model="password" type="password" class="login-input" required placeholder="Password"/>
-                </div>
-                <div class="remember-me">
-                    <input v-model="rememberMe" type="checkbox" class="login-checkbox">
-                    <label>Remember Me</label>
                 </div>
                 <div class="login-button-div">
                     <button type="submit" class="login-button">Login</button>
@@ -69,7 +73,9 @@ h2 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.login-data, .login-button-div, .remember-me {
+.login-data, .login-button-div{
+    display: flex;
+    justify-content: center;
     padding: 1vw 2.5vw;
 }
 
@@ -82,12 +88,8 @@ h2 {
 .login-button {
     padding: 10px 20px;
     font-size: 18px;
-    width: 100%;
+    width: 30%;
     cursor: pointer;
-}
-
-.login-checkbox {
-    margin-right: 0.5vw;
 }
 
 </style>

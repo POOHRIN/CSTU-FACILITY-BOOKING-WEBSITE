@@ -5,6 +5,7 @@ import Guideline from '../views/GuideLineView.vue'
 import MyBooking from '../views/MyBookingView.vue'
 import RoomList from '../views/RoomListView.vue'
 import RoomDetail from '../views/RoomDetailView.vue'
+import AdminHome from '../views/AdminHomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,7 +54,12 @@ const router = createRouter({
           component: RoomDetail
         }
       ]
-    }
+    },
+    {
+      path: '/admin-home',
+      name: 'admin-home',
+      component: AdminHome
+    },
   ]
 })
 

@@ -34,7 +34,8 @@ const fetchBookings = async () => {
     const q = query(
       collection(db, "bookings"),
       where("room", "==", roomId),
-      where("date", "==", selectedDate.value)
+      where("date", "==", selectedDate.value),
+      where("status", "==", "booking")
     );
 
     const querySnapshot = await getDocs(q);
@@ -53,7 +54,8 @@ const fetchBookingsUser = async () => {
     const q = query(
       collection(db, "bookings"),
       where("user_id", "==", userId),
-      where("date", "==", selectedDate.value)
+      where("date", "==", selectedDate.value),
+      where("status", "==", "booking")
     );
 
     const querySnapshot = await getDocs(q);
@@ -169,11 +171,12 @@ const bookRoom =  async () => {
     date: selectedDate.value,
     start_time: startTime.value,
     end_time: endTime.value,
+    status: "booking",
   };
 
   try {
     await addBooking(newBooking);
-    alert("Booking Successful!");
+    alert(`ทำการจองห้อง ${ room.value.name } วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} เวลา ${startTime.value} - ${endTime.value} สำเร็จ`);
     router.replace("/home");
     setTimeout(() => {
       window.location.reload();
@@ -223,9 +226,8 @@ const bookRoom =  async () => {
         </select>
         </div>
       </div>
-
       <div class="button-wrapper">
-        <button class="booking-btn" :disabled="!startTime || !endTime" @click="bookRoom">Book Now</button>
+        <button class="booking-btn" :disabled="!startTime || !endTime" @click="bookRoom">จองห้อง</button>
       </div>
     </div>
   </div>

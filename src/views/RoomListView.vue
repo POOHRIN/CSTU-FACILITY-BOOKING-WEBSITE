@@ -6,6 +6,8 @@ import { activityRoomList, meetingRoomList } from "@/roomList";
 const route = useRoute();
 const router = useRouter();
 
+const userId = localStorage.getItem("userIdLogin");
+
 const activityRooms = ref(activityRoomList);
 const meetingRooms = ref(meetingRoomList);
 
@@ -62,7 +64,7 @@ if (userId == "admin") {
   padding: 60px; 
   border-radius: 15px;
   text-align: center;
-  font-size: 26px; 
+  font-size: 1.8vmax; 
   font-weight: bold;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);
   color: black;

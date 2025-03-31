@@ -13,7 +13,8 @@ const fetchBookingsSide = async () => {
   try {
     const q = query(
       collection(db, "bookings"),
-      where("user_id", "==", userId)
+      where("user_id", "==", userId),
+      where("status", "==", "booking")
     );
 
     const querySnapshot = await getDocs(q);
@@ -162,8 +163,8 @@ const isActive = (path: string) => route.path === path;
 }
 
 .red {
-  background-color: rgb(226, 104, 104);
-  color: rgb(255, 0, 0);
+  background-color: rgb(255, 141, 141);
+  color: rgb(154, 0, 0);
 }
 
 .green {

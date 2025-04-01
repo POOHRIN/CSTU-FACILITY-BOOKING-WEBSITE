@@ -10,11 +10,6 @@ const userId = localStorage.getItem("userIdLogin");
 
 const activityRooms = ref(activityRoomList);
 const meetingRooms = ref(meetingRoomList);
-
-if (userId == "admin") {
-    router.push('/admin-home');
-}
-
 </script>
 
 <template>

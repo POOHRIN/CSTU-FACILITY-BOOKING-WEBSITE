@@ -10,10 +10,7 @@ import type { BookingData } from "./bookingData";
 const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
-
-if (userId == "admin") {
-    router.push('/admin-home');
-}
+const userIdBooking = ref("");
 
 // Room
 const roomId = route.params.roomId; 
@@ -51,12 +48,23 @@ const fetchBookings = async () => {
 const fetchBookingsUser = async () => {
 
   try {
-    const q = query(
-      collection(db, "bookings"),
-      where("user_id", "==", userId),
-      where("date", "==", selectedDate.value),
-      where("status", "==", "booking")
-    );
+    let q;
+
+    if (userId === "admin" && userIdBooking.value) {
+      q = query(
+        collection(db, "bookings"),
+        where("user_id", "==", userIdBooking.value),
+        where("date", "==", selectedDate.value),
+        where("status", "==", "booking")
+      );
+    } else {
+      q = query(
+        collection(db, "bookings"),
+        where("user_id", "==", userId),
+        where("date", "==", selectedDate.value),
+        where("status", "==", "booking")
+      );
+    }
 
     const querySnapshot = await getDocs(q);
     bookingsUser.value = querySnapshot.docs.map(doc => ({
@@ -160,23 +168,34 @@ const addBooking = async (booking: BookingData) => {
 
 const bookRoom =  async () => {
 
-  if (!selectedDate.value || !startTime.value || !endTime.value) {
+  if (!selectedDate.value || !startTime.value || !endTime.value || (userId === "admin" && !userIdBooking.value)) {
     alert("Please select all fields before booking!");
     return;
   }
 
   const newBooking: BookingData = {
-    user_id: userId, 
-    room: String(roomId), 
+    user_id: userId === "admin" ? userIdBooking.value : userId,
+    room: String(roomId),
     date: selectedDate.value,
     start_time: startTime.value,
     end_time: endTime.value,
     status: "booking",
   };
-
+  
   try {
     await addBooking(newBooking);
-    alert(`ทำการจองห้อง ${ room.value.name } วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} เวลา ${startTime.value} - ${endTime.value} สำเร็จ`);
+    if(userId === "admin"){
+      alert(`ทำการจองห้อง ${ room.value.name } 
+      วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} 
+      เวลา ${startTime.value} - ${endTime.value} 
+      ให้ผู้ใช้ ${userIdBooking.value} 
+      สำเร็จ`);
+    }else{
+      alert(`ทำการจองห้อง ${ room.value.name } 
+      วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} 
+      เวลา ${startTime.value} - ${endTime.value} 
+      สำเร็จ`);
+    }
     router.replace("/home");
     setTimeout(() => {
       window.location.reload();
@@ -194,7 +213,22 @@ const bookRoom =  async () => {
     <div class="room-card">
       <h2 class="room-name">{{ room.name }}</h2>
 
-      <input type="date" v-model="selectedDate" class="date-picker" :min="minDate" id="date"/>
+      <input 
+        v-if="userId === 'admin'"
+        v-model="userIdBooking" 
+        class="user-input" 
+        required 
+        placeholder="User ID"
+      />
+
+      <input 
+        type="date" 
+        v-model="selectedDate" 
+        class="date-picker" 
+        :disabled="userId === 'admin' && !userIdBooking"
+        :min="minDate" 
+        id="date"
+      />
 
       <div class="time-picker" >
         <div class="time-row">
@@ -258,7 +292,7 @@ const bookRoom =  async () => {
   color: #333;
 }
 
-.date-picker {
+.date-picker, .user-input{
   margin-bottom: 2vh;
   font-size: 16px;
   padding: 10px;

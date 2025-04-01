@@ -12,7 +12,7 @@ const handleLogin = () => {
         localStorage.setItem('userIdLogin', userId.value); // Store in localStorage
         if (userId.value == "admin"){
             if(password.value == "admin123"){
-                router.push('/admin-home')
+                router.push('/home')
             }else{
                 alert("Incorrected Password");
             }

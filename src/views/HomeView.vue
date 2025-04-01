@@ -9,10 +9,6 @@ const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
-if (userId == "admin") {
-    router.push('/admin-home');
-}
-
 </script>
 
 <template>

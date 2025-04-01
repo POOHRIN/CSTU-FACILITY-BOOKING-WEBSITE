@@ -13,7 +13,7 @@ const roomList = [...activityRoomList, ...meetingRoomList];
 const router = useRouter();
 
 if (userId == "admin") {
-    router.push('/admin-home');
+    router.push('/home');
 }
 
 const fetchBookings = async () => {

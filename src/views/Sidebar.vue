@@ -49,7 +49,7 @@ const isActive = (path: string) => route.path === path;
 
 <template>
   <aside class="sidebar">
-    <ul v-if="userId !== 'admin'">
+    <ul >
       <li class="home">
         <router-link 
           to="/home" 
@@ -58,7 +58,7 @@ const isActive = (path: string) => route.path === path;
         </router-link>
       </li>
     </ul>
-    <ul class="facility" v-if="userId !== 'admin'">
+    <ul class="facility">
       <li>
         <router-link 
           to="/home/meeting-room" 
@@ -74,7 +74,7 @@ const isActive = (path: string) => route.path === path;
         </router-link>
       </li>
     </ul>
-    <ul v-if="userId !== 'admin'">
+    <ul>
       <li>
         <router-link 
           to="/home/guideline" 
@@ -92,6 +92,15 @@ const isActive = (path: string) => route.path === path;
           <span :class="{'booking-count': true, 'red': myBookingCount === 0, 'green': myBookingCount >= 1}">
             {{ myBookingCount }}
           </span>
+        </router-link>
+      </li>
+    </ul>
+    <ul v-if="userId === 'admin'">
+      <li>
+        <router-link 
+          to="/home/all-booking" 
+          :class="{ active: isActive('/home/all-booking'), disabled: isActive('/home/all-booking') }">
+          All Booking
         </router-link>
       </li>
     </ul>

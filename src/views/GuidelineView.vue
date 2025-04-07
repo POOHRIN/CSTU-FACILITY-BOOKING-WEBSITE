@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import Image1 from "@/assets/glt3.png";
 
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
@@ -8,17 +9,19 @@ const userId = localStorage.getItem("userIdLogin");
 
 <template>
   <div class="guideline-container">
-    <h2>วิธีการจอง Facility</h2>
+    <h1>วิธีการจอง Facility</h1>
     <div class="guideline-content">
-      <p>การจอง Facility ง่ายและรวดเร็ว เพียงทำตามขั้นตอนดังนี้:</p>
+      <p>การจอง Facility สามารถทำได้ตามขั้นตอนดังนี้:</p>
       <ol><br>
-        <li><strong>เลือก Facility ที่ต้องการ :</strong> เลือก Facility ที่คุณต้องการจองจากแถบด้านข้าง เช่น Meeting Room หรือ Presentation Room</li>
+        <li>
+          <strong>เลือก Facility ที่ต้องการ :</strong> เลือก Facility ที่คุณต้องการจะจองจากแถบด้านข้างหรือจากปุ่ม Home เช่น Meeting Room หรือ Presentation Room
+          <img :src="Image1" alt="เลือก Facility" class="guide-img"/>
+        </li><br>
         <li><strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือก Facility แล้ว เลือกวันที่และเวลาที่คุณต้องการจอง</li>
         <li><strong>ไปที่ My Booking :</strong> หลังจากเลือกเวลาที่ต้องการแล้ว กดปุ่ม "จองทันที" เพื่อยืนยันการจอง</li>
         <li><strong>กดยืนยัน :</strong> คุณจะได้รับการยืนยันการจองพร้อมกับหมายเลขจอง</li>
       </ol>
       <p>หากคุณพบปัญหาหรือมีคำถามเพิ่มเติม สามารถติดต่อทีมสนับสนุนของเราได้ตลอดเวลา</p>
-      <h1> เดี๋ยวมาแก้เพิ่ม</h1>
     </div>
   </div>
 </template>
@@ -49,6 +52,12 @@ const userId = localStorage.getItem("userIdLogin");
   font-size: 1.5em;
 }
 
+.guideline-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
 .guideline-content {
   padding: 20px;
 }
@@ -60,6 +69,15 @@ ol {
 ol li {
   margin-bottom: 15px;
   line-height: 1.6;
+}
+
+.guide-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 strong {

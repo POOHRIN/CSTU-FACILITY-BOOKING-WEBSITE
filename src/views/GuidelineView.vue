@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import Image1 from "@/assets/glt3.png";
+import Image2 from "@/assets/glt5.png";
 
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
@@ -16,10 +17,24 @@ const userId = localStorage.getItem("userIdLogin");
         <li>
           <strong>เลือก Facility ที่ต้องการ :</strong> เลือก Facility ที่คุณต้องการจะจองจากแถบด้านข้างหรือจากปุ่ม Home เช่น Meeting Room หรือ Presentation Room
           <img :src="Image1" alt="เลือก Facility" class="guide-img"/>
-        </li><br>
-        <li><strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือก Facility แล้ว เลือกวันที่และเวลาที่คุณต้องการจอง</li>
-        <li><strong>ไปที่ My Booking :</strong> หลังจากเลือกเวลาที่ต้องการแล้ว กดปุ่ม "จองทันที" เพื่อยืนยันการจอง</li>
-        <li><strong>กดยืนยัน :</strong> คุณจะได้รับการยืนยันการจองพร้อมกับหมายเลขจอง</li>
+        </li><br><br>
+
+        <li>
+          <strong>เลือกห้องที่ต้องการ :</strong> เมื่อคุณเลือกประเภทของ Facility แล้ว เลือกห้องที่ต้องการจะจอง
+          <img :src="Image2" alt="เลือกห้องที่ต้องการ" class="guide-img"/>
+        </li><br><br>
+
+        <li>
+          <strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือก Facility แล้ว เลือกวันที่และเวลาที่คุณต้องการจอง
+        </li>
+
+        <li>
+          <strong>ไปที่ My Booking :</strong> หลังจากเลือกเวลาที่ต้องการแล้ว กดปุ่ม "จองทันที" เพื่อยืนยันการจอง
+        </li>
+
+        <li>
+          <strong>กดยืนยัน :</strong> คุณจะได้รับการยืนยันการจองพร้อมกับหมายเลขจอง
+        </li>
       </ol>
       <p>หากคุณพบปัญหาหรือมีคำถามเพิ่มเติม สามารถติดต่อทีมสนับสนุนของเราได้ตลอดเวลา</p>
     </div>
@@ -73,8 +88,9 @@ ol li {
 
 .guide-img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: 600px;        
+  height: 400px;       
+  object-fit: cover;   
   margin-top: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);

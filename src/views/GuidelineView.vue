@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import Image1 from "@/assets/glt3.png";
 import Image2 from "@/assets/glt5.png";
+import Image3 from "@/assets/glt6.png";
 
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
@@ -25,8 +26,9 @@ const userId = localStorage.getItem("userIdLogin");
         </li><br><br>
 
         <li>
-          <strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือก Facility แล้ว เลือกวันที่และเวลาที่คุณต้องการจอง
-        </li>
+          <strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือกห้องที่ต้องการแล้ว เลือกวันที่และเวลาที่คุณต้องการจอง จากนั้นกดจองห้อง
+          <img :src="Image3" alt="เลือกวันที่และเวลา" class="guide-img"/>
+        </li><br><br>
 
         <li>
           <strong>ไปที่ My Booking :</strong> หลังจากเลือกเวลาที่ต้องการแล้ว กดปุ่ม "จองทันที" เพื่อยืนยันการจอง
@@ -59,18 +61,13 @@ const userId = localStorage.getItem("userIdLogin");
   width: calc(100% - 12vw); 
   overflow-y: auto; 
   overflow-x: hidden; 
-}
-
-.guideline-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.5em;
+  font-size: 18px;
 }
 
 .guideline-container h1 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.5em;
+  font-size: 30px;
 }
 
 .guideline-content {
@@ -89,7 +86,7 @@ ol li {
 .guide-img {
   display: block;
   width: 600px;        
-  height: 400px;       
+  height: 450px;       
   object-fit: cover;   
   margin-top: 10px;
   border-radius: 8px;

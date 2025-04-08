@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import Image1 from "@/assets/glt3.png";
 import Image2 from "@/assets/glt5.png";
 import Image3 from "@/assets/glt6.png";
+import Image4 from "@/assets/glt7.png";
 
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
@@ -26,8 +27,11 @@ const userId = localStorage.getItem("userIdLogin");
         </li><br><br>
 
         <li>
-          <strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือกห้องที่ต้องการแล้ว เลือกวันที่และเวลาที่คุณต้องการจอง จากนั้นกดจองห้อง
-          <img :src="Image3" alt="เลือกวันที่และเวลา" class="guide-img"/>
+          <strong>เลือกวันที่และเวลา :</strong> เมื่อคุณเลือกห้องที่ต้องการแล้ว เลือกวันที่และเวลาที่คุณต้องการจอง จากนั้นกดจองห้อง หลังจากกดจองห้องก็จะแสดงข้อความว่าจองสำเร็จ
+          <div class="image-row">
+            <img :src="Image3" alt="เลือกวันที่และเวลา" class="guide-img"/>
+            <img :src="Image4" alt="จองสำเร็จ" class="guide-img"/>
+          </div>
         </li><br><br>
 
         <li>
@@ -87,10 +91,19 @@ ol li {
   display: block;
   width: 600px;        
   height: 450px;       
-  object-fit: cover;   
+  object-fit: cover;
+  margin: 10px auto 0 auto;   
   margin-top: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.image-row {
+  display: flex;
+  gap: 20px; 
+  margin-top: 10px;
+  flex-wrap: wrap; 
+  justify-content: center; 
 }
 
 strong {

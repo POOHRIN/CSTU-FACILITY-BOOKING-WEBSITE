@@ -4,6 +4,7 @@ import Image1 from "@/assets/glt3.png";
 import Image2 from "@/assets/glt5.png";
 import Image3 from "@/assets/glt6.png";
 import Image4 from "@/assets/glt7.png";
+import Image5 from "@/assets/glt8.png";
 
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
@@ -35,12 +36,10 @@ const userId = localStorage.getItem("userIdLogin");
         </li><br><br>
 
         <li>
-          <strong>ไปที่ My Booking :</strong> หลังจากเลือกเวลาที่ต้องการแล้ว กดปุ่ม "จองทันที" เพื่อยืนยันการจอง
-        </li>
+          <strong>ไปที่ My Booking :</strong> หลังจากกดจองห้องแล้ว สามารถมาตรวจสอบรายละเอียดการจองได้ที่ My Booking 
+          <img :src="Image5" alt="My Booking" class="guide-img"/>
+        </li><br><br>
 
-        <li>
-          <strong>กดยืนยัน :</strong> คุณจะได้รับการยืนยันการจองพร้อมกับหมายเลขจอง
-        </li>
       </ol>
       <p>หากคุณพบปัญหาหรือมีคำถามเพิ่มเติม สามารถติดต่อทีมสนับสนุนของเราได้ตลอดเวลา</p>
     </div>
@@ -92,7 +91,7 @@ ol li {
   width: 600px;        
   height: 450px;       
   object-fit: cover;
-  margin: 10px auto 0 auto;   
+  /*margin: 10px auto 0 auto;  */
   margin-top: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -103,7 +102,7 @@ ol li {
   gap: 20px; 
   margin-top: 10px;
   flex-wrap: wrap; 
-  justify-content: center; 
+  /*justify-content: center;*/ 
 }
 
 strong {

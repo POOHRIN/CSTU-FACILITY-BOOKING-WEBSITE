@@ -10,6 +10,10 @@ import Image6 from "@/assets/glt9.png";
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
+if (userId !== "admin") {
+    router.push('/home');
+}
+
 </script>
 
 <template>

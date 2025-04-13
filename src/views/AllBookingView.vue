@@ -29,6 +29,7 @@ const filteredBookings = computed(() => {
 const roomConvert = (roomPath: string) => {
   return roomList.find(r => r.path === roomPath)?.name || "Unknown Room";
 };
+
 </script>
 
 <template>

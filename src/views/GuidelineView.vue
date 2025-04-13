@@ -10,10 +10,6 @@ import Image6 from "@/assets/glt9.png";
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
-if (userId !== "admin") {
-    router.push('/home');
-}
-
 </script>
 
 <template>
@@ -164,7 +160,7 @@ if (userId !== "admin") {
 }
 
 .support-text {
-  margin-top: 30px;
+  margin-top: 40px;
   text-align: center;
   font-size: 16px;
   color: #666;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { query, collection, where, getDocs, orderBy, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { activityRoomList, meetingRoomList } from "@/roomList";
 import type { BookingData } from "./bookingData";
@@ -10,10 +10,47 @@ const roomList = [...activityRoomList, ...meetingRoomList];
 const selectedRoom = ref("all");
 const selectedStatus = ref("all");
 
+const dateConvert = (dateStr: string) => {
+  return new Date(dateStr).toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
 const fetchAllBookings = async () => {
-  const q = query(collection(db, "bookings"), orderBy("date", "asc"));
-  const snapshot = await getDocs(q);
-  bookings.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as BookingData[];
+  try {
+    const q = query(
+      collection(db, "bookings"), 
+      orderBy("date", "asc")
+    );
+
+    const snapshot = await getDocs(q);
+    const now = new Date();
+    now.setMilliseconds(0);
+
+    bookings.value = snapshot.docs
+      .map(doc => ({ 
+        id: doc.id, 
+        ...doc.data(), 
+    }) as BookingData)
+    .filter(booking => {
+      const bookingDate = new Date(booking.date);
+      bookingDate.setHours(0, 0, 0, 0); 
+        
+      const [hours, minutes] = booking.end_time.split(":").map(Number);
+      const bookingEndDateTime = new Date(booking.date);
+      bookingEndDateTime.setHours(hours, minutes, 0, 0);
+
+      return (
+        bookingDate >= new Date().setHours(0, 0, 0, 0) &&
+        bookingEndDateTime > now
+      );
+    });
+
+  } catch (error) {
+    console.error("Error fetching filtered bookings:", error);
+  }
 };
 
 onMounted(fetchAllBookings);
@@ -30,6 +67,26 @@ const roomConvert = (roomPath: string) => {
   return roomList.find(r => r.path === roomPath)?.name || "Unknown Room";
 };
 
+const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd) => {
+  const confirmCancel = window.confirm(`คุณต้องการที่จะยกเลิกการจองใช่ไหม`);
+  if (confirmCancel) {
+    try {
+      const bookingRef = doc(db, "bookings", bookingId);
+      await updateDoc(bookingRef, { status: "cancelled" });
+      console.log("Booking cancelled successfully.");
+      alert(`ยกเลิกการจองห้อง ${bookingRoom} 
+      ของ ${bookingUserId} 
+      วันที่ ${bookingDate} 
+      เวลา ${bookingStart} - ${bookingEnd} 
+      สำเร็จ`);
+      fetchAllBookings(); 
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+    }
+  } else {
+    console.log("Cancellation aborted.");
+  }
+};
 </script>
 
 <template>
@@ -58,6 +115,7 @@ const roomConvert = (roomPath: string) => {
               <th>วันที่</th>
               <th>เวลา</th>
               <th>สถานะ</th>
+              <th> </th>
             </tr>
           </thead>
           <tbody>
@@ -67,6 +125,9 @@ const roomConvert = (roomPath: string) => {
               <td>{{ new Date(booking.date).toLocaleDateString("th-TH") }}</td>
               <td>{{ booking.start_time }} - {{ booking.end_time }} น.</td>
               <td :class="booking.status">{{ booking.status }}</td>
+              <td>
+                <button @click="cancelBooking(booking.id, roomConvert(booking.room), booking.user_id, dateConvert(booking.date),booking.start_time, booking.end_time)" v-if="booking.status === 'booking'">ยกเลิกการจอง</button>
+              </td>
             </tr>
           </tbody>
         </table>

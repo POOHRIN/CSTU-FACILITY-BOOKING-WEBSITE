@@ -25,8 +25,8 @@ const fetchBookings = async () => {
     );
 
     const querySnapshot = await getDocs(q);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset to start of the day
+    const now = new Date();
+    now.setMilliseconds(0);
 
     bookings.value = querySnapshot.docs
       .map(doc => ({
@@ -35,8 +35,16 @@ const fetchBookings = async () => {
       }) as BookingData)
       .filter(booking => {
         const bookingDate = new Date(booking.date);
-        bookingDate.setHours(0, 0, 0, 0); // Reset to start of the day
-        return bookingDate >= today;
+        bookingDate.setHours(0, 0, 0, 0); 
+
+        const [hours, minutes] = booking.end_time.split(":").map(Number);
+        const bookingEndDateTime = new Date(booking.date);
+        bookingEndDateTime.setHours(hours, minutes, 0, 0);
+
+        return (
+          bookingDate >= new Date().setHours(0, 0, 0, 0) &&
+          bookingEndDateTime > now
+        );
       });
 
   } catch (error) {
@@ -65,15 +73,18 @@ const showCancelButton = (booking: BookingData) => {
   return booking.status !== 'cancelled' && bookingDate > new Date();
 };
 
-const cacelBooking = async (bookingId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd) => {
+const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd) => {
   const confirmCancel = window.confirm(`คุณต้องการที่จะยกเลิกการจองใช่ไหม`);
   if (confirmCancel) {
     try {
       const bookingRef = doc(db, "bookings", bookingId);
       await updateDoc(bookingRef, { status: "cancelled" });
       console.log("Booking cancelled successfully.");
-      alert(`ยกเลิกการจองห้อง ${bookingRoom} วันที่ ${bookingDate} เวลา ${bookingStart} - ${bookingEnd} สำเร็จ`);
-      fetchBookings(); // This should be enough to refresh the bookings list
+      alert(`ยกเลิกการจองห้อง ${bookingRoom} 
+      วันที่ ${bookingDate} 
+      เวลา ${bookingStart} - ${bookingEnd} 
+      สำเร็จ`);
+      fetchBookings(); 
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
@@ -97,7 +108,7 @@ const cacelBooking = async (bookingId: string, bookingRoom: string, bookingDate:
         <button 
           v-if= "showCancelButton(booking)"
           class="cancel-btn" 
-          @click="cacelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date),booking.start_time, booking.end_time)"
+          @click="cancelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date),booking.start_time, booking.end_time)"
         >
           ยกเลิกการจอง
         </button>

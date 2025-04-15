@@ -1,22 +1,42 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
+import { db } from "../firebase";
+import type { AdminData } from "./adminData";
 
 const router = useRouter();
-const userId = ref('');
-const password = ref('');
-const rememberMe = ref(false);
+const userId = ref<string>('');
+const password = ref<string>('');
+const admins = ref<AdminData[]>([]);
 
-const handleLogin = () => {
-    if (userId.value && password.value) {
+const handleLogin = async () => {
+    if (userId.value.trim() && password.value.trim()) {
         localStorage.setItem('userIdLogin', userId.value); // Store in localStorage
-        if (userId.value == "admin"){
-            if(password.value == "admin123"){
-                router.push('/home')
-            }else{
-                alert("Incorrected Password");
+        if (userId.value == "admin"){ //Admin
+            const q = query(
+                collection(db, "admins"),
+                where("admin_id", "==", userId.value)
+            );
+
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                const adminData = querySnapshot.docs[0].data();
+        
+                if (adminData.password === password.value) {
+                    admins.value = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    })) as AdminData[];
+                    router.push('/home'); 
+                } else {
+                    alert("Invalid password.");
+                }
+            } else {
+                alert("Admin not found.");
             }
-        }else{
+        }else{ //User
             router.push('/home');
         } 
     } else {
@@ -29,7 +49,7 @@ const handleLogin = () => {
     <div class="login">
         <div class="login-box">
             <h2>Login</h2>
-            <form @submit.prevent="handleLogin">
+            <form @submit.prevent="handleLogin" autocomplete="off">
                 <div class="login-data">
                     <input v-model="userId" class="login-input" required placeholder="User ID"/>
                 </div>

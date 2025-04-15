@@ -41,7 +41,7 @@ function logout() {
       <span v-if="userId === 'admin'" class="admin"> ADMIN</span>
     </div>
     <div class="navbar-right" ref="dropdown">
-      <a @click="toggleDropdown" class="dropdown-a">{{ userId }}</a>
+      <a @click="toggleDropdown" class="dropdown-a">{{ userId || 'User ID' }}</a>
         <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
           <li><router-link to="/login" class="dropdown-link" @click="logout()">Logout</router-link></li>
         </ul>

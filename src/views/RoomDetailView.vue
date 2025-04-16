@@ -13,7 +13,7 @@ const userId = localStorage.getItem("userIdLogin");
 const userIdBooking = ref("");
 
 // Room
-const roomId = route.params.roomId; 
+const roomId = route.params.roomId;
 const roomList = [...activityRoomList, ...meetingRoomList];
 const room = ref(roomList.find(r => r.path === roomId) || { name: "Unknown Room" });
 
@@ -97,7 +97,7 @@ while (hour < 18 || (hour === 18 && minute === 0)) {
 const allEndTimes = [];
 hour = 9;
 minute = 0;
-while (hour < 19) {  
+while (hour < 19) {
   allEndTimes.push(`${String(hour).padStart(2, "0")}:${minute === 30 ? "30" : "00"}`);
   minute = minute === 30 ? 0 : 30;
   if (minute === 0) hour++;
@@ -166,7 +166,7 @@ const addBooking = async (booking: BookingData) => {
   }
 };
 
-const bookRoom =  async () => {
+const bookRoom = async () => {
 
   if (!selectedDate.value || !startTime.value || !endTime.value || (userId === "admin" && !userIdBooking.value)) {
     alert("Please select all fields before booking!");
@@ -181,17 +181,17 @@ const bookRoom =  async () => {
     end_time: endTime.value,
     status: "booking",
   };
-  
+
   try {
     await addBooking(newBooking);
-    if(userId === "admin"){
-      alert(`ทำการจองห้อง ${ room.value.name } 
+    if (userId === "admin") {
+      alert(`ทำการจองห้อง ${room.value.name} 
       วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} 
       เวลา ${startTime.value} - ${endTime.value} 
       ให้ผู้ใช้ ${userIdBooking.value} 
       สำเร็จ`);
-    }else{
-      alert(`ทำการจองห้อง ${ room.value.name } 
+    } else {
+      alert(`ทำการจองห้อง ${room.value.name} 
       วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} 
       เวลา ${startTime.value} - ${endTime.value} 
       สำเร็จ`);
@@ -213,33 +213,16 @@ const bookRoom =  async () => {
     <div class="room-card">
       <h2 class="room-name">{{ room.name }}</h2>
 
-      <input 
-        v-if="userId === 'admin'"
-        v-model="userIdBooking" 
-        class="user-input" 
-        required 
-        placeholder="User ID"
-      />
+      <input v-if="userId === 'admin'" v-model="userIdBooking" class="user-input" required placeholder="User ID" />
 
-      <input 
-        type="date" 
-        v-model="selectedDate" 
-        class="date-picker" 
-        :disabled="userId === 'admin' && !userIdBooking"
-        :min="minDate" 
-        id="date"
-      />
+      <input type="date" v-model="selectedDate" class="date-picker" :disabled="userId === 'admin' && !userIdBooking"
+        :min="minDate" id="date" />
 
-      <div class="time-picker" >
+      <div class="time-picker">
         <div class="time-row">
           <select v-model="startTime" :disabled="!selectedDate" class="time-dropdown">
-            <option 
-              v-for="time in times" 
-              :key="time" 
-              :value="time" 
-              :disabled="bookedTimes.has(time)"
-              :class="{'disabled-option': bookedTimes.has(time)}"
-            >
+            <option v-for="time in times" :key="time" :value="time" :disabled="bookedTimes.has(time)"
+              :class="{ 'disabled-option': bookedTimes.has(time) }">
               {{ time }}
             </option>
           </select>
@@ -248,16 +231,11 @@ const bookRoom =  async () => {
         <div class="time-row">
           <label>to</label>
           <select v-model="endTime" :disabled="!startTime" class="time-dropdown">
-            <option 
-              v-for="time in allEndTimes" 
-              :key="time" 
-              :value="time"
-              :disabled="disableEndTimes.has(time)"
-              :class="{'disabled-option': disableEndTimes.has(time)}"
-            >
+            <option v-for="time in allEndTimes" :key="time" :value="time" :disabled="disableEndTimes.has(time)"
+              :class="{ 'disabled-option': disableEndTimes.has(time) }">
               {{ time }}
             </option>
-        </select>
+          </select>
         </div>
       </div>
       <div class="button-wrapper">
@@ -292,7 +270,8 @@ const bookRoom =  async () => {
   color: #333;
 }
 
-.date-picker, .user-input{
+.date-picker,
+.user-input {
   margin-bottom: 2vh;
   font-size: 16px;
   padding: 10px;
@@ -373,12 +352,14 @@ const bookRoom =  async () => {
   color: #777;
   cursor: not-allowed;
 }
+
 label {
   text-align: center;
   margin: 2vh 0;
   font-weight: bold;
 }
-.disabled-option{
+
+.disabled-option {
   color: rgb(146, 146, 146);
   background-color: #d4d4d4;
 }

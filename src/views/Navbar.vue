@@ -25,7 +25,7 @@ onUnmounted(() => {
 const userId = ref('');
 
 onMounted(() => {
-    userId.value = localStorage.getItem('userIdLogin') || '';
+  userId.value = localStorage.getItem('userIdLogin') || '';
 });
 
 function logout() {
@@ -42,20 +42,19 @@ function logout() {
     </div>
     <div class="navbar-right" ref="dropdown">
       <a @click="toggleDropdown" class="dropdown-a">{{ userId || 'User ID' }}</a>
-        <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
-          <li><router-link to="/login" class="dropdown-link" @click="logout()">Logout</router-link></li>
-        </ul>
+      <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
+        <li><router-link to="/login" class="dropdown-link" @click="logout()">Logout</router-link></li>
+      </ul>
     </div>
-</nav>
+  </nav>
 </template>
-  
-<style scoped>
 
+<style scoped>
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(219,78,78);
+  background-color: rgb(219, 78, 78);
   color: white;
   padding: 15px 20px;
 }
@@ -102,7 +101,7 @@ function logout() {
   font-size: 30px;
 }
 
-.admin{
+.admin {
   color: gold;
   font-size: 12px;
   margin-left: 5px;

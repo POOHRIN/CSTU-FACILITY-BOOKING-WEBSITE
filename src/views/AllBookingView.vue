@@ -21,7 +21,7 @@ const dateConvert = (dateStr: string) => {
 const fetchAllBookings = async () => {
   try {
     const q = query(
-      collection(db, "bookings"), 
+      collection(db, "bookings"),
       orderBy("date", "asc")
     );
 
@@ -30,23 +30,23 @@ const fetchAllBookings = async () => {
     now.setMilliseconds(0);
 
     bookings.value = snapshot.docs
-      .map(doc => ({ 
-        id: doc.id, 
-        ...doc.data(), 
-    }) as BookingData)
-    .filter(booking => {
-      const bookingDate = new Date(booking.date);
-      bookingDate.setHours(0, 0, 0, 0); 
-        
-      const [hours, minutes] = booking.end_time.split(":").map(Number);
-      const bookingEndDateTime = new Date(booking.date);
-      bookingEndDateTime.setHours(hours, minutes, 0, 0);
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }) as BookingData)
+      .filter(booking => {
+        const bookingDate = new Date(booking.date);
+        bookingDate.setHours(0, 0, 0, 0);
 
-      return (
-        bookingDate >= new Date().setHours(0, 0, 0, 0) &&
-        bookingEndDateTime > now
-      );
-    });
+        const [hours, minutes] = booking.end_time.split(":").map(Number);
+        const bookingEndDateTime = new Date(booking.date);
+        bookingEndDateTime.setHours(hours, minutes, 0, 0);
+
+        return (
+          bookingDate >= new Date().setHours(0, 0, 0, 0) &&
+          bookingEndDateTime > now
+        );
+      });
 
   } catch (error) {
     console.error("Error fetching filtered bookings:", error);
@@ -79,7 +79,7 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
       วันที่ ${bookingDate} 
       เวลา ${bookingStart} - ${bookingEnd} 
       สำเร็จ`);
-      fetchAllBookings(); 
+      fetchAllBookings();
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
@@ -90,50 +90,52 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
 </script>
 
 <template>
-    <div class="admin-booking-container">
-      <div class="filters">
-        <select v-model="selectedRoom">
-          <option value="all">ทุกห้อง</option>
-          <option v-for="room in roomList" :key="room.path" :value="room.path">
-            {{ room.name }}
-          </option>
-        </select>
-  
-        <select v-model="selectedStatus">
-          <option value="all">ทุกสถานะ</option>
-          <option value="booking">กำลังจอง</option>
-          <option value="cancelled">ยกเลิกแล้ว</option>
-        </select>
-      </div>
-  
-      <div class="booking-table">
-        <table>
-          <thead>
-            <tr class="header">
-              <th>ชื่อห้อง</th>
-              <th>ผู้จอง</th>
-              <th>วันที่</th>
-              <th>เวลา</th>
-              <th>สถานะ</th>
-              <th> </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="booking in filteredBookings" :key="booking.id">
-              <td>{{ roomConvert(booking.room) }}</td>
-              <td>{{ booking.user_id }}</td>
-              <td>{{ new Date(booking.date).toLocaleDateString("th-TH") }}</td>
-              <td>{{ booking.start_time }} - {{ booking.end_time }} น.</td>
-              <td :class="booking.status">{{ booking.status }}</td>
-              <td>
-                <button @click="cancelBooking(booking.id, roomConvert(booking.room), booking.user_id, dateConvert(booking.date),booking.start_time, booking.end_time)" v-if="booking.status === 'booking'">ยกเลิกการจอง</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="admin-booking-container">
+    <div class="filters">
+      <select v-model="selectedRoom">
+        <option value="all">ทุกห้อง</option>
+        <option v-for="room in roomList" :key="room.path" :value="room.path">
+          {{ room.name }}
+        </option>
+      </select>
+
+      <select v-model="selectedStatus">
+        <option value="all">ทุกสถานะ</option>
+        <option value="booking">กำลังจอง</option>
+        <option value="cancelled">ยกเลิกแล้ว</option>
+      </select>
     </div>
-  </template>
+
+    <div class="booking-table">
+      <table>
+        <thead>
+          <tr class="header">
+            <th>ชื่อห้อง</th>
+            <th>ผู้จอง</th>
+            <th>วันที่</th>
+            <th>เวลา</th>
+            <th>สถานะ</th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="booking in filteredBookings" :key="booking.id">
+            <td>{{ roomConvert(booking.room) }}</td>
+            <td>{{ booking.user_id }}</td>
+            <td>{{ new Date(booking.date).toLocaleDateString("th-TH") }}</td>
+            <td>{{ booking.start_time }} - {{ booking.end_time }} น.</td>
+            <td :class="booking.status">{{ booking.status }}</td>
+            <td>
+              <button
+                @click="cancelBooking(booking.id, roomConvert(booking.room), booking.user_id, dateConvert(booking.date), booking.start_time, booking.end_time)"
+                v-if="booking.status === 'booking'">ยกเลิกการจอง</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .admin-booking-container {
@@ -174,7 +176,8 @@ table {
   border-radius: 16px;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -195,5 +198,4 @@ th, td {
   font-weight: bold;
   color: #111;
 }
-
 </style>

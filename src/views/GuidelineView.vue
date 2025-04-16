@@ -20,28 +20,28 @@ const userId = localStorage.getItem("userIdLogin");
         <div class="step-number">1</div>
         <h3>เลือก Facility ที่ต้องการ</h3>
         <p>เลือก Facility ที่คุณต้องการจองจากแถบด้านข้างหรือจากปุ่ม Home เช่น Meeting Room หรือ Presentation Room</p>
-        <img :src="Image1" alt="เลือก Facility" class="guide-img"/>
+        <img :src="Image1" alt="เลือก Facility" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">2</div>
         <h3>เลือกห้องที่ต้องการ</h3>
         <p>เมื่อคุณเลือกประเภทของ Facility แล้ว เลือกห้องที่ต้องการจะจอง</p>
-        <img :src="Image2" alt="เลือกห้องที่ต้องการ" class="guide-img"/>
+        <img :src="Image2" alt="เลือกห้องที่ต้องการ" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">3</div>
         <h3>เลือกวันที่และเวลา</h3>
         <p>เมื่อคุณเลือกห้องที่ต้องการแล้ว เลือกวันที่และเวลาที่คุณต้องการจอง จากนั้นกดจองห้อง</p>
-        <img :src="Image3" alt="เลือกวันที่และเวลา" class="guide-img"/>
+        <img :src="Image3" alt="เลือกวันที่และเวลา" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">4</div>
         <h3>ไปที่ My Booking</h3>
         <p>หลังจากกดจองห้องแล้ว สามารถมาตรวจสอบรายละเอียดการจองได้ที่ My Booking</p>
-        <img :src="Image5" alt="My Booking" class="guide-img"/>
+        <img :src="Image5" alt="My Booking" class="guide-img" />
       </div>
     </div><br><br><br>
 
@@ -51,34 +51,35 @@ const userId = localStorage.getItem("userIdLogin");
         <div class="step-number">5</div>
         <h3>hidden</h3>
         <p>hidden</p>
-        <img :src="Image1" alt="เลือก Facility" class="guide-img"/>
+        <img :src="Image1" alt="เลือก Facility" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">1</div>
         <h3>ไปที่ My Booking</h3>
         <p>ไปที่ My Booking เพื่อเลือกรายการที่ต้องการจะยกเลิก</p>
-        <img :src="Image6" alt="Cancel Booking" class="guide-img"/>
+        <img :src="Image6" alt="Cancel Booking" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">2</div>
         <h3>กดยกเลิกการจอง</h3>
         <p>จากนั้นเลือก Facility ที่คุณต้องการจะยกเลิก และคลิก "ยกเลิกการจอง" ที่อยู่ด้านขวา</p>
-        <img :src="Image4" alt="เลือก Facility" class="guide-img"/>
+        <img :src="Image4" alt="เลือก Facility" class="guide-img" />
       </div>
 
       <div class="step-card" style="visibility: hidden;"> <!-- ซ่อน -->
         <div class="step-number">8</div>
         <h3>hidden</h3>
         <p>hidden</p>
-        <img :src="Image1" alt="เลือก Facility" class="guide-img"/>
+        <img :src="Image1" alt="เลือก Facility" class="guide-img" />
       </div>
     </div>
 
 
     <p class="support-text">
-      หากคุณพบปัญหาหรือมีคำถามเพิ่มเติม สามารถติดต่อทีมสนับสนุนของเราได้ตลอดเวลาได้ที่อีเมล poohrin.kon@dome.tu.ac.th <br>
+      หากคุณพบปัญหาหรือมีคำถามเพิ่มเติม สามารถติดต่อทีมสนับสนุนของเราได้ตลอดเวลาได้ที่อีเมล poohrin.kon@dome.tu.ac.th
+      <br>
       หรือ wisut.nat@dome.tu.ac.th</p>
   </div>
 </template>
@@ -128,7 +129,7 @@ const userId = localStorage.getItem("userIdLogin");
   height: 40px;
   margin: 0 auto 15px;
   border-radius: 50%;
-  background-color: rgb(219,78,78);
+  background-color: rgb(219, 78, 78);
   color: white;
   font-weight: bold;
   font-size: 20px;

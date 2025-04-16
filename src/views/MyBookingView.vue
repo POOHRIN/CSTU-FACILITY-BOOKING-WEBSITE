@@ -13,15 +13,15 @@ const roomList = [...activityRoomList, ...meetingRoomList];
 const router = useRouter();
 
 if (userId == "admin") {
-    router.push('/home');
+  router.push('/home');
 }
 
 const fetchBookings = async () => {
   try {
     const q = query(
       collection(db, "bookings"),
-      where("user_id", "==", userId ),
-      orderBy("date", "asc") 
+      where("user_id", "==", userId),
+      orderBy("date", "asc")
     );
 
     const querySnapshot = await getDocs(q);
@@ -35,7 +35,7 @@ const fetchBookings = async () => {
       }) as BookingData)
       .filter(booking => {
         const bookingDate = new Date(booking.date);
-        bookingDate.setHours(0, 0, 0, 0); 
+        bookingDate.setHours(0, 0, 0, 0);
 
         const [hours, minutes] = booking.end_time.split(":").map(Number);
         const bookingEndDateTime = new Date(booking.date);
@@ -84,7 +84,7 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
       วันที่ ${bookingDate} 
       เวลา ${bookingStart} - ${bookingEnd} 
       สำเร็จ`);
-      fetchBookings(); 
+      fetchBookings();
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
@@ -97,26 +97,19 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
 <template>
   <div class="book-container">
     <div class="book-list">
-      <div 
-        v-for="booking in bookings" 
-        :key="booking.id"
-        class="book-card"
-        :class="{ 'cancelled-card': booking.status === 'cancelled' }"
-      >
+      <div v-for="booking in bookings" :key="booking.id" class="book-card"
+        :class="{ 'cancelled-card': booking.status === 'cancelled' }">
         <p class="book-room">{{ roomConvert(booking.room) }}</p>
-        <p class="book-time">{{ dateConvert(booking.date) }} {{ booking.start_time }}น. - {{ booking.end_time }}น.</p> 
-        <button 
-          v-if= "showCancelButton(booking)"
-          class="cancel-btn" 
-          @click="cancelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date),booking.start_time, booking.end_time)"
-        >
+        <p class="book-time">{{ dateConvert(booking.date) }} {{ booking.start_time }}น. - {{ booking.end_time }}น.</p>
+        <button v-if="showCancelButton(booking)" class="cancel-btn"
+          @click="cancelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date), booking.start_time, booking.end_time)">
           ยกเลิกการจอง
         </button>
         <div v-if="booking.status === 'cancelled'" class="cancelled-overlay">
           <div v-if="booking.status === 'cancelled'" class="cancelled-text">
             ยกเลิกการจอง
           </div>
-        </div>  
+        </div>
       </div>
     </div>
   </div>
@@ -124,14 +117,14 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
 
 <style scoped>
 .book-container {
-  width: 100%; 
+  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: rgb(254, 172, 99);
   padding: 1vmax;
   height: auto;
-  overflow-y: auto; 
-  overflow-x: hidden; 
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .book-list {
@@ -143,23 +136,23 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
 
 .book-card {
   background: #f0f0f0;
-  padding: 2vmax; 
+  padding: 2vmax;
   border-radius: 15px;
   text-align: left;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);
   color: black;
   align-items: center;
   justify-content: space-between;
-  position: relative; 
+  position: relative;
 }
 
-.book-room{
-    font-weight: bold;
-    font-size: 1.8vmax;
+.book-room {
+  font-weight: bold;
+  font-size: 1.8vmax;
 }
 
-.book-time{
-    font-size: 1vmax;
+.book-time {
+  font-size: 1vmax;
 }
 
 .cancel-btn {
@@ -174,9 +167,9 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
   right: 1.5vmax;
   bottom: 1.5vmax;
   transition: background 0.3s ease;
-  right: 2vmax; 
+  right: 2vmax;
   top: 50%;
-  transform: translateY(-50%); 
+  transform: translateY(-50%);
 }
 
 .cancel-btn:hover {
@@ -198,7 +191,7 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
   height: 100%;
   width: 100%;
   text-align: center;
-  z-index: 10; 
+  z-index: 10;
 }
 
 .cancelled-text {
@@ -212,9 +205,9 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
   padding: 10px 20px;
   border-radius: 10px;
   text-align: center;
-  width: 80%;  
-  height: auto; 
-  white-space: nowrap; 
-  box-sizing: border-box; 
+  width: 80%;
+  height: auto;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 </style>

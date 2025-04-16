@@ -52,14 +52,15 @@ if (!userId) {
 
 .main-container {
   display: flex;
-  flex: 1; 
+  flex: 1;
   overflow: hidden;
 }
 
 .content {
-  flex-grow: 1; 
+  flex-grow: 1;
   display: flex;
-  padding-left: 180px; /*padding from sidebar*/
+  padding-left: 180px;
+  /*padding from sidebar*/
   justify-content: center;
   background-color: rgb(254, 172, 99);
   color: black;
@@ -79,16 +80,16 @@ if (!userId) {
   padding-right: 1.5vw;
 }
 
-.image{
-  width: 98%; 
+.image {
+  width: 98%;
   height: 98%;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   margin: 1vmax;
 }
 
-.image-wrapper{
+.image-wrapper {
   position: relative;
-  width: 98%; 
+  width: 98%;
   height: 98%;
 }
 
@@ -110,7 +111,6 @@ if (!userId) {
 }
 
 .image-wrapper:hover img {
-  opacity: 0.7; 
+  opacity: 0.7;
 }
-
 </style>

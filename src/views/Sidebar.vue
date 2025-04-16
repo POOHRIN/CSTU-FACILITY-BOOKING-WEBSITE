@@ -49,26 +49,22 @@ const isActive = (path: string) => route.path === path;
 
 <template>
   <aside class="sidebar">
-    <ul >
+    <ul>
       <li class="home">
-        <router-link 
-          to="/home" 
-          :class="{ active: isActive('/home'), disabled: isActive('/home') }">
+        <router-link to="/home" :class="{ active: isActive('/home'), disabled: isActive('/home') }">
           Home
         </router-link>
       </li>
     </ul>
     <ul class="facility">
       <li>
-        <router-link 
-          to="/home/meeting-room" 
+        <router-link to="/home/meeting-room"
           :class="{ active: isActive('/home/meeting-room'), disabled: isActive('/home/meeting-room') }">
           Meeting Room
         </router-link>
       </li>
       <li>
-        <router-link 
-          to="/home/activity-room" 
+        <router-link to="/home/activity-room"
           :class="{ active: isActive('/home/activity-room'), disabled: isActive('/home/activity-room') }">
           Activity Room
         </router-link>
@@ -76,8 +72,7 @@ const isActive = (path: string) => route.path === path;
     </ul>
     <ul>
       <li>
-        <router-link 
-          to="/home/guideline" 
+        <router-link to="/home/guideline"
           :class="{ active: isActive('/home/guideline'), disabled: isActive('/home/guideline') }">
           Guideline
         </router-link>
@@ -85,11 +80,10 @@ const isActive = (path: string) => route.path === path;
     </ul>
     <ul v-if="userId !== 'admin'">
       <li>
-        <router-link 
-          to="/home/my-booking" 
+        <router-link to="/home/my-booking"
           :class="{ active: isActive('/home/my-booking'), disabled: isActive('/home/my-booking') }">
           My Booking
-          <span :class="{'booking-count': true, 'red': myBookingCount === 0, 'green': myBookingCount >= 1}">
+          <span :class="{ 'booking-count': true, 'red': myBookingCount === 0, 'green': myBookingCount >= 1 }">
             {{ myBookingCount }}
           </span>
         </router-link>
@@ -97,8 +91,7 @@ const isActive = (path: string) => route.path === path;
     </ul>
     <ul v-if="userId === 'admin'">
       <li>
-        <router-link 
-          to="/home/all-booking" 
+        <router-link to="/home/all-booking"
           :class="{ active: isActive('/home/all-booking'), disabled: isActive('/home/all-booking') }">
           All Booking
         </router-link>
@@ -106,30 +99,32 @@ const isActive = (path: string) => route.path === path;
     </ul>
   </aside>
 </template>
-  
+
 <style scoped>
 .sidebar {
   width: 180px;
   height: 100%;
-  background-color: rgb(217,217,217);
+  background-color: rgb(217, 217, 217);
   color: black;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  position: fixed; 
-  top: 60px; 
+  position: fixed;
+  top: 60px;
   left: 0;
   bottom: 0;
   z-index: 9999;
 }
+
 .sidebar a {
   color: black;
   text-decoration: none;
   padding: 10px;
 }
+
 .sidebar a:hover {
   background: rgb(193, 193, 193);
-  padding: 5px 10px;  
+  padding: 5px 10px;
   border-radius: 5px;
 }
 
@@ -143,7 +138,9 @@ const isActive = (path: string) => route.path === path;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.sidebar ul, .sidebar li{
+
+.sidebar ul,
+.sidebar li {
   padding: 1.6vh 0;
 }
 
@@ -151,7 +148,7 @@ const isActive = (path: string) => route.path === path;
   background-color: rgb(193, 193, 193);
   cursor: default;
   color: black;
-  padding: 5px 10px;  
+  padding: 5px 10px;
   border-radius: 5px;
 }
 

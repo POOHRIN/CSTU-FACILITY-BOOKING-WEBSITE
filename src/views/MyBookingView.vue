@@ -2,8 +2,8 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted, computed } from "vue";
 import { query, collection, where, getDocs, orderBy, doc, updateDoc } from "firebase/firestore";
-import type { BookingData } from "./bookingData";
-import { db } from "../firebase";
+import type { BookingData } from "@/types/bookingData";
+import { db } from "@/services/firebase";
 import { activityRoomList, meetingRoomList } from "@/roomList";
 
 const userId = localStorage.getItem("userIdLogin");

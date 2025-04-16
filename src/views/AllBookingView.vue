@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { query, collection, where, getDocs, orderBy, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "@/services/firebase";
 import { activityRoomList, meetingRoomList } from "@/roomList";
-import type { BookingData } from "./bookingData";
+import type { BookingData } from "@/types/bookingData";
 
 const bookings = ref<BookingData[]>([]);
 const roomList = [...activityRoomList, ...meetingRoomList];

@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
-import { db } from "../firebase";
-import type { AdminData } from "./adminData";
+import { db } from "@/services/firebase";
+import type { AdminData } from "@/types/adminData";
 
 const router = useRouter();
 const userId = ref<string>('');

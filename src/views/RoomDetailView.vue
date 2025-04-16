@@ -4,8 +4,8 @@ import { useRoute, useRouter } from "vue-router";
 import { watch } from "vue";
 import { activityRoomList, meetingRoomList } from "@/roomList";
 import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
-import { db } from "../firebase";
-import type { BookingData } from "./bookingData";
+import { db } from "@/services/firebase";
+import type { BookingData } from "@/types/bookingData";
 
 const route = useRoute();
 const router = useRouter();

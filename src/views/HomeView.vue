@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Navbar from "@/views/Navbar.vue";
 import Sidebar from "@/views/Sidebar.vue";
@@ -9,17 +10,43 @@ const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
 
+const sidebarVisible = ref(false);
+const isMobile = ref(window.innerWidth <= 600);
+
+const updateWindowSize = () => {
+  isMobile.value = window.innerWidth <= 600;
+  if (!isMobile.value) {
+    sidebarVisible.value = true;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("resize", updateWindowSize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWindowSize);
+});
+
+const toggleSidebar = () => {
+  if (isMobile.value) {
+    sidebarVisible.value = !sidebarVisible.value;
+  }
+};
+
 if (!userId) {
   router.push("/login");
 }
-
 </script>
 
 <template>
   <div class="layout">
-    <Navbar />
+    <Navbar @toggleSidebar="toggleSidebar" />
     <div class="main-container">
-      <Sidebar />
+      <Sidebar 
+        :class="{ visible: sidebarVisible, hidden: !sidebarVisible }"
+        @closeSidebar="sidebarVisible = false"
+      />
       <div class="content">
         <div class="image-container" v-show="route.path === '/home'">
           <div class="image-wrapper">
@@ -98,7 +125,7 @@ if (!userId) {
   top: 5vh;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: bold;
   color: black;
   background-color: rgba(255, 255, 255, 0.7);
@@ -112,5 +139,34 @@ if (!userId) {
 
 .image-wrapper:hover img {
   opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .content {
+    padding-left: 0;
+    padding-top: 10px;
+  }
+
+  .image-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin-bottom: 1vh;
+  }
+
+  .image-wrapper {
+    width: 80vw;
+    max-width: none;
+  }
+
+  .navbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  }
 }
 </style>

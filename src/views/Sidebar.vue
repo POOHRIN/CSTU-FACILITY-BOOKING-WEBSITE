@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, defineEmits } from "vue";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import type { BookingData } from "@/types/bookingData";
 import { db } from "@/services/firebase";
@@ -8,6 +8,16 @@ import { db } from "@/services/firebase";
 const userId = localStorage.getItem("userIdLogin");
 const bookings = ref<BookingData[]>([]);
 const myBookingCount = ref(0);
+
+const emit = defineEmits<{
+  (e: 'closeSidebar'): void;
+}>();
+
+const handleClick = () => {
+  if (window.innerWidth <= 600) {
+    emit("closeSidebar");
+  }
+};
 
 const fetchBookingsSide = async () => {
   try {
@@ -51,7 +61,9 @@ const isActive = (path: string) => route.path === path;
   <aside class="sidebar">
     <ul>
       <li class="home">
-        <router-link to="/home" :class="{ active: isActive('/home'), disabled: isActive('/home') }">
+        <router-link to="/home" 
+          @click="handleClick" 
+          :class="{ active: isActive('/home'), disabled: isActive('/home') }">
           Home
         </router-link>
       </li>
@@ -59,12 +71,14 @@ const isActive = (path: string) => route.path === path;
     <ul class="facility">
       <li>
         <router-link to="/home/meeting-room"
+          @click="handleClick"
           :class="{ active: isActive('/home/meeting-room'), disabled: isActive('/home/meeting-room') }">
           Meeting Room
         </router-link>
       </li>
       <li>
         <router-link to="/home/activity-room"
+          @click="handleClick"
           :class="{ active: isActive('/home/activity-room'), disabled: isActive('/home/activity-room') }">
           Activity Room
         </router-link>
@@ -73,6 +87,7 @@ const isActive = (path: string) => route.path === path;
     <ul>
       <li>
         <router-link to="/home/guideline"
+          @click="handleClick"
           :class="{ active: isActive('/home/guideline'), disabled: isActive('/home/guideline') }">
           Guideline
         </router-link>
@@ -81,6 +96,7 @@ const isActive = (path: string) => route.path === path;
     <ul v-if="userId !== 'admin'">
       <li>
         <router-link to="/home/my-booking"
+          @click="handleClick"
           :class="{ active: isActive('/home/my-booking'), disabled: isActive('/home/my-booking') }">
           My Booking
           <span :class="{ 'booking-count': true, 'red': myBookingCount === 0, 'green': myBookingCount >= 1 }">
@@ -92,6 +108,7 @@ const isActive = (path: string) => route.path === path;
     <ul v-if="userId === 'admin'">
       <li>
         <router-link to="/home/all-booking"
+          @click="handleClick"
           :class="{ active: isActive('/home/all-booking'), disabled: isActive('/home/all-booking') }">
           All Booking
         </router-link>
@@ -177,5 +194,29 @@ const isActive = (path: string) => route.path === path;
   background-color: rgb(127, 202, 127);
   color: rgb(1, 103, 1);
   line-height: 1;
+}
+
+@media (min-width: 601px) {
+  .sidebar {
+    transform: translateX(0);
+    position: fixed;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.visible {
+    transform: translateX(0);
+  }
 }
 </style>

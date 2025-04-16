@@ -14,19 +14,19 @@ const userId = localStorage.getItem("userIdLogin");
 
 <template>
   <div class="guideline-container">
-    <h1>วิธีการจอง Facility</h1>
+    <h1>วิธีการจองสิ่งอำนวยความสะดวก</h1>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-number">1</div>
-        <h3>เลือก Facility ที่ต้องการ</h3>
-        <p>เลือก Facility ที่คุณต้องการจองจากแถบด้านข้างหรือจากปุ่ม Home เช่น Meeting Room หรือ Presentation Room</p>
+        <h3>เลือกสิ่งอำนวยความสะดวกที่ต้องการ</h3>
+        <p>เลือกสิ่งอำนวยความสะดวกที่คุณต้องการจองจากแถบด้านข้างหรือจากปุ่ม Home เช่น Meeting Room หรือ Presentation Room</p>
         <img :src="Image1" alt="เลือก Facility" class="guide-img" />
       </div>
 
       <div class="step-card">
         <div class="step-number">2</div>
         <h3>เลือกห้องที่ต้องการ</h3>
-        <p>เมื่อคุณเลือกประเภทของ Facility แล้ว เลือกห้องที่ต้องการจะจอง</p>
+        <p>เมื่อคุณเลือกประเภทของสิ่งอำนวยความสะดวกแล้ว เลือกห้องที่ต้องการจะจอง</p>
         <img :src="Image2" alt="เลือกห้องที่ต้องการ" class="guide-img" />
       </div>
 
@@ -47,12 +47,6 @@ const userId = localStorage.getItem("userIdLogin");
 
     <h1>วิธีการยกเลิกการจอง</h1>
     <div class="steps-grid">
-      <div class="step-card" style="visibility: hidden;"> <!-- ซ่อน -->
-        <div class="step-number">5</div>
-        <h3>hidden</h3>
-        <p>hidden</p>
-        <img :src="Image1" alt="เลือก Facility" class="guide-img" />
-      </div>
 
       <div class="step-card">
         <div class="step-number">1</div>
@@ -64,16 +58,10 @@ const userId = localStorage.getItem("userIdLogin");
       <div class="step-card">
         <div class="step-number">2</div>
         <h3>กดยกเลิกการจอง</h3>
-        <p>จากนั้นเลือก Facility ที่คุณต้องการจะยกเลิก และคลิก "ยกเลิกการจอง" ที่อยู่ด้านขวา</p>
+        <p>จากนั้นเลือกสิ่งอำนวยความสะดวกที่คุณต้องการจะยกเลิก และคลิก "ยกเลิกการจอง" ที่อยู่ด้านขวา</p>
         <img :src="Image4" alt="เลือก Facility" class="guide-img" />
       </div>
 
-      <div class="step-card" style="visibility: hidden;"> <!-- ซ่อน -->
-        <div class="step-number">8</div>
-        <h3>hidden</h3>
-        <p>hidden</p>
-        <img :src="Image1" alt="เลือก Facility" class="guide-img" />
-      </div>
     </div>
 
 
@@ -94,18 +82,18 @@ const userId = localStorage.getItem("userIdLogin");
   border-radius: 12px;
   margin-top: 20px;
   color: #333;
-  font-size: 18px;
+  font-size: 2rem;
   max-height: 85vh;
   overflow-y: auto;
-  position: absolute;
   left: 11vw;
   width: calc(100% - 12vw);
 }
 
 .guideline-container h1 {
   text-align: center;
-  font-size: 32px;
+  font-size: 2rem;
   color: #222;
+  font-weight: bold;
   margin-bottom: 30px;
 }
 
@@ -132,21 +120,21 @@ const userId = localStorage.getItem("userIdLogin");
   background-color: rgb(219, 78, 78);
   color: white;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .step-card h3 {
-  font-size: 22px;
+  font-size: 1.5rem;
   margin-bottom: 10px;
   color: #222;
   font-weight: bold;
 }
 
 .step-card p {
-  font-size: 16px;
+  font-size: 1.1rem;
   color: #000000;
 }
 

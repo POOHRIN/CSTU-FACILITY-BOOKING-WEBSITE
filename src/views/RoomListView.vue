@@ -63,4 +63,17 @@ const meetingRooms = ref(meetingRoomList);
 .room-card:hover {
   background-color: rgb(193, 193, 193);
 }
+
+@media (max-width: 600px) {
+  .room-list {
+    max-height: 100vh;
+    overflow-y: auto;
+    gap: 10px;
+  }
+
+  .room-card {
+    min-width: 100%; /* Ensure it takes full width */
+    flex-shrink: 0;
+  }
+}
 </style>

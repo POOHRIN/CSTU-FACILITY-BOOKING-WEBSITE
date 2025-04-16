@@ -147,7 +147,6 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
   font-size: 18px;
   max-height: 88vh;
   overflow-y: auto;
-  position: absolute;
   left: 11vw;
   width: calc(100% - 12vw);
 }
@@ -156,6 +155,7 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .filters select {
@@ -163,6 +163,8 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  flex: 1;
+  min-width: 150px;
 }
 
 .booking-table {
@@ -197,5 +199,40 @@ td {
   font-size: 22px;
   font-weight: bold;
   color: #111;
+}
+
+@media (max-width: 600px) {
+  .admin-booking-container {
+    left: 5vw;
+    width: 90vw;
+    padding: 15px;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters select {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .header {
+    font-size: 18px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
 </style>

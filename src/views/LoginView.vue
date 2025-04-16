@@ -100,20 +100,24 @@ body {
 
 h2 {
     text-align: center;
+    margin-bottom: 1rem;
 }
 
 .login {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
 
 .login-box {
     background-color: rgb(219, 78, 78);
     color: white;
     border-radius: 25px;
-    width: 30vw;
-    padding: 2vw;
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -121,19 +125,32 @@ h2 {
 .login-button-div {
     display: flex;
     justify-content: center;
-    padding: 1vw 2.5vw;
+    margin-bottom: 1rem;
 }
 
 .login-input {
-    height: 2vw;
+    height: 2.5rem;
     width: 100%;
-    padding: 0.5vw;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
 .login-button {
     padding: 10px 20px;
-    font-size: 18px;
-    width: 30%;
+    font-size: 1rem;
+    width: 50%;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s ease;
 }
+
+.login-button:hover {
+    background-color: #f0f0f0;
+}
+
 </style>

@@ -3,8 +3,8 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Navbar from "@/views/Navbar.vue";
 import Sidebar from "@/views/Sidebar.vue";
-import Image1 from "@/assets/Test1.jpg";
-import Image2 from "@/assets/Test2.jpg";
+import MeetingRoom from "@/assets/MeetingRoom.jpg";
+import ActivityRoom from "@/assets/ActivityRoom.jpg";
 
 const route = useRoute();
 const router = useRouter();
@@ -52,13 +52,13 @@ if (!userId) {
           <div class="image-wrapper">
             <span class="image-text">Meeting Room</span>
             <router-link to="/home/meeting-room">
-              <img :src="Image1" alt="Meeting Room" class="image" />
+              <img :src="MeetingRoom" alt="Meeting Room" class="image" />
             </router-link>
           </div>
           <div class="image-wrapper">
             <span class="image-text">Activity Room</span>
             <router-link to="/home/activity-room">
-              <img :src="Image2" alt="Activity Room" class="image" />
+              <img :src="ActivityRoom" alt="Activity Room" class="image" />
             </router-link>
           </div>
         </div>

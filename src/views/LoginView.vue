@@ -71,8 +71,9 @@ const handleLogin = async () => {
 
 <template>
     <div class="login">
+        <h1>TU FACILITY BOOKING WEBSITE</h1>
         <div class="login-box">
-            <h2>Login</h2>
+            <h2>LOGIN</h2>
             <form @submit.prevent="handleLogin" autocomplete="off">
                 <div class="login-data">
                     <input v-model="userId" class="login-input" required placeholder="User ID" />
@@ -89,7 +90,7 @@ const handleLogin = async () => {
 </template>
 
 <style>
-body {
+.login body {
     background-color: rgb(254, 172, 99);
     display: flex;
     justify-content: center;
@@ -98,9 +99,19 @@ body {
     margin: 0;
 }
 
-h2 {
+.login h1{
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    color: white;
+    font-weight: bolder;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.login h2 {
     text-align: center;
     margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.6rem;
 }
 
 .login {
@@ -109,6 +120,7 @@ h2 {
     justify-content: center;
     align-items: center;
     height: 100%;
+    flex-direction: column;
 }
 
 .login-box {
@@ -116,9 +128,10 @@ h2 {
     color: white;
     border-radius: 25px;
     width: 90%;
-    max-width: 400px;
+    max-width: 30rem;
     padding: 2rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    gap: 1.5rem;
 }
 
 .login-data,
@@ -135,6 +148,7 @@ h2 {
     border: none;
     border-radius: 5px;
     font-size: 1rem;
+    margin: 1rem;
 }
 
 .login-button {
@@ -147,10 +161,32 @@ h2 {
     background-color: white;
     color: black;
     transition: background-color 0.3s ease;
+    margin-top: 2rem;
 }
 
 .login-button:hover {
     background-color: #f0f0f0;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
+@media (max-width: 730px) {
+    .login h1 {
+        font-size: 6vw;
+    }
+
+    .login-box {
+        padding: 1.5rem;
+    }
+
+    .login-button {
+        font-size: 0.95rem;
+    }
+
+    .login h2 {
+        font-size: 4vw;
+    }
+}
+
 
 </style>

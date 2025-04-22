@@ -32,10 +32,10 @@ const handleLogin = async () => {
                     })) as AdminData[];
                     router.push('/home');
                 } else {
-                    alert("Invalid password.");
+                    alert("Login failed: Password Invalid.");
                 }
             } else {
-                alert("Admin not found.");
+                alert("Login failed: User Invalid.");
             }
         } else { // User
             try {
@@ -52,15 +52,16 @@ const handleLogin = async () => {
                         }
                     }
                 );
+                
 
                 if (res.data && res.data.status) {
                     router.push('/home');
                 } else {
-                    alert('Login failed: Invalid credentials.');
+                    alert('Login failed: User Invalid.');
                 }
             } catch (err: any) {
                 console.error(err);
-                alert('Login error: ' + (err.response?.data?.message || err.message));
+                alert('Login failed: ' + (err.response?.data?.message || err.message));
             }
         }
     } else {

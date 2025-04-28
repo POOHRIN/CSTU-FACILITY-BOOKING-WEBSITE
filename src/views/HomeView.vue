@@ -149,6 +149,8 @@ if (!userId) {
   .content {
     padding-left: 0;
     padding-top: 10px;
+    max-height: 100vh;
+    overflow-y: auto;
   }
 
   .image-container {

@@ -42,7 +42,7 @@ const fetchBookings = async () => {
         bookingEndDateTime.setHours(hours, minutes, 0, 0);
 
         return (
-          bookingDate >= new Date().setHours(0, 0, 0, 0) &&
+          new Date(bookingDate).getTime() >= new Date().setHours(0, 0, 0, 0) &&
           bookingEndDateTime > now
         );
       });
@@ -73,7 +73,7 @@ const showCancelButton = (booking: BookingData) => {
   return booking.status !== 'cancelled' && bookingDate > new Date();
 };
 
-const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd) => {
+const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd: string) => {
   const confirmCancel = window.confirm(`คุณต้องการที่จะยกเลิกการจองใช่ไหม`);
   if (confirmCancel) {
     try {
@@ -102,7 +102,7 @@ const cancelBooking = async (bookingId: string, bookingRoom: string, bookingDate
         <p class="book-room">{{ roomConvert(booking.room) }}</p>
         <p class="book-time">{{ dateConvert(booking.date) }} {{ booking.start_time }}น. - {{ booking.end_time }}น.</p>
         <button v-if="showCancelButton(booking)" class="cancel-btn"
-          @click="cancelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date), booking.start_time, booking.end_time)">
+          @click="booking.id && cancelBooking(booking.id, roomConvert(booking.room), dateConvert(booking.date), booking.start_time, booking.end_time)">
           ยกเลิกการจอง
         </button>
         <div v-if="booking.status === 'cancelled'" class="cancelled-overlay">

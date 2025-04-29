@@ -4,7 +4,7 @@ import UserIcon from "@/assets/UserIcon.png";
 import MenuIcon from "@/assets/MenuIcon.png";
 
 const isOpen = ref(false);
-const dropdown = ref(null);
+const dropdown = ref<HTMLElement | null>(null);
 
 const emit = defineEmits<{
   (e: 'toggleSidebar'): void;
@@ -18,8 +18,8 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handleClickOutside = (event) => {
-  if (dropdown.value && !dropdown.value.contains(event.target)) {
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
     isOpen.value = false;
   }
 };

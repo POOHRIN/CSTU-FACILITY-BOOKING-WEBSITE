@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, type Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { watch } from "vue";
 import { activityRoomList, meetingRoomList } from "@/roomList";
@@ -10,7 +10,7 @@ import type { BookingData } from "@/types/bookingData";
 const route = useRoute();
 const router = useRouter();
 const userId = localStorage.getItem("userIdLogin");
-const userIdBooking = ref("");
+const userIdBooking: Ref<string | null> = ref(null);
 
 // Room
 const roomId = route.params.roomId;
@@ -82,10 +82,10 @@ watch(selectedDate, () => {
 });
 
 // Time selection logic
-const startTime = ref(null);
+const startTime = ref<string | null>(null);
 const endTime = ref(null);
 
-const times = [];
+const times: string[] = [];
 let hour = 8;
 let minute = 30;
 while (hour < 18 || (hour === 18 && minute === 0)) {
@@ -94,7 +94,7 @@ while (hour < 18 || (hour === 18 && minute === 0)) {
   if (minute === 0) hour++;
 }
 
-const allEndTimes = [];
+const allEndTimes: string[] = [];
 hour = 9;
 minute = 0;
 while (hour < 19) {
@@ -129,7 +129,7 @@ const disableEndTimes = computed(() => {
   let firstBookingAfterStart = null;
   const disabledSet = new Set<string>();
 
-  const validBookings = bookings.value.filter(booking => booking.start_time > startTime.value);
+  const validBookings = bookings.value.filter(booking => booking.start_time > startTime.value!);
 
   if (validBookings.length > 0) {
     validBookings.sort((a, b) => a.start_time.localeCompare(b.start_time));
@@ -148,7 +148,7 @@ const disableEndTimes = computed(() => {
   }
 
   allEndTimes.forEach(time => {
-    if (time <= startTime.value) {
+    if (startTime.value !== null && time <= startTime.value) {
       disabledSet.add(time);
     }
   });
@@ -167,15 +167,26 @@ const addBooking = async (booking: BookingData) => {
 };
 
 const bookRoom = async () => {
-
   if (!selectedDate.value || !startTime.value || !endTime.value || (userId === "admin" && !userIdBooking.value)) {
     alert("Please select all fields before booking!");
     return;
   }
 
+  let userIdForBooking: string;
+
+  if (userId === "admin") {
+    if (userIdBooking.value === null) {
+      userIdForBooking = '';  
+    } else {
+      userIdForBooking = userIdBooking.value;
+    }
+  } else {
+    userIdForBooking = userId ?? ''; 
+  }
+
   const newBooking: BookingData = {
-    user_id: userId === "admin" ? userIdBooking.value : userId,
-    room: String(roomId),
+    user_id: userIdForBooking,  
+    room: String(roomId),  
     date: selectedDate.value,
     start_time: startTime.value,
     end_time: endTime.value,
@@ -184,6 +195,7 @@ const bookRoom = async () => {
 
   try {
     await addBooking(newBooking);
+
     if (userId === "admin") {
       alert(`ทำการจองห้อง ${room.value.name} 
       วันที่ ${new Date(selectedDate.value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} 
@@ -196,7 +208,9 @@ const bookRoom = async () => {
       เวลา ${startTime.value} - ${endTime.value} 
       สำเร็จ`);
     }
+
     router.replace("/home");
+
     setTimeout(() => {
       window.location.reload();
     }, 100);

@@ -43,7 +43,7 @@ const fetchAllBookings = async () => {
         bookingEndDateTime.setHours(hours, minutes, 0, 0);
 
         return (
-          bookingDate >= new Date().setHours(0, 0, 0, 0) &&
+          new Date(bookingDate).getTime() >= new Date().setHours(0, 0, 0, 0) &&
           bookingEndDateTime > now
         );
       });
@@ -67,7 +67,7 @@ const roomConvert = (roomPath: string) => {
   return roomList.find(r => r.path === roomPath)?.name || "Unknown Room";
 };
 
-const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd) => {
+const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRoom: string, bookingDate: string, bookingStart: string, bookingEnd: string) => {
   const confirmCancel = window.confirm(`คุณต้องการที่จะยกเลิกการจองใช่ไหม`);
   if (confirmCancel) {
     try {
@@ -127,7 +127,7 @@ const cancelBooking = async (bookingId: string, bookingUserId: string, bookingRo
             <td :class="booking.status">{{ booking.status }}</td>
             <td>
               <button
-                @click="cancelBooking(booking.id, roomConvert(booking.room), booking.user_id, dateConvert(booking.date), booking.start_time, booking.end_time)"
+                @click="booking.id && cancelBooking(booking.id, roomConvert(booking.room), booking.user_id, dateConvert(booking.date), booking.start_time, booking.end_time)"
                 v-if="booking.status === 'booking'">ยกเลิกการจอง</button>
             </td>
           </tr>

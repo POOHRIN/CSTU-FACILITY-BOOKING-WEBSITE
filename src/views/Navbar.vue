@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, defineEmits } from "vue";
+import UserIcon from "@/assets/UserIcon.png";
+import MenuIcon from "@/assets/MenuIcon.png";
 
 const isOpen = ref(false);
-const dropdown = ref(null);
+const dropdown = ref<HTMLElement | null>(null);
+
+const emit = defineEmits<{
+  (e: 'toggleSidebar'): void;
+}>();
+
+const handleSidebarToggle = () => {
+  emit("toggleSidebar");
+};
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handleClickOutside = (event) => {
-  if (dropdown.value && !dropdown.value.contains(event.target)) {
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
     isOpen.value = false;
   }
 };
@@ -21,31 +31,60 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
 });
+
+const userId = ref('');
+
+onMounted(() => {
+  userId.value = localStorage.getItem('userIdLogin') || '';
+});
+
+function logout() {
+  localStorage.removeItem('userIdLogin');
+  console.log(localStorage.getItem('userIdLogin'));
+}
 </script>
 
 <template>
   <nav class="navbar">
     <div class="navbar-left">
+      <img 
+        :src="MenuIcon" 
+        alt="Menu Icon" 
+        class="menu-icon" 
+        @click="handleSidebarToggle"
+      />
       <h1>CSTU Facility Booking</h1>
+      <span v-if="userId === 'admin'" class="admin"> ADMIN</span>
     </div>
     <div class="navbar-right" ref="dropdown">
-      <a @click="toggleDropdown" class="dropdown-a">User ID</a>
-        <ul v-if="isOpen" ref="dropdown" class="dropdown-menu">
-          <li><router-link to="/login" class="dropdown-link">Logout</router-link></li>
-        </ul>
+      <img 
+        @click="toggleDropdown" 
+        :src="UserIcon" 
+        alt="User Icon" 
+        class="user-icon dropdown-a" 
+      />
+      <ul v-if="isOpen" class="dropdown-menu">
+        <li>{{ userId }}</li>
+        <li><router-link to="/login" class="dropdown-link" @click="logout()">Logout</router-link></li>
+      </ul>
     </div>
-</nav>
+  </nav>
 </template>
-  
-<style scoped>
 
+<style scoped>
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(219,78,78);
+  background-color: rgb(219, 78, 78);
   color: white;
   padding: 15px 20px;
+}
+
+.navbar-left {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .navbar-right {
@@ -71,6 +110,7 @@ onUnmounted(() => {
   width: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  z-index: 9999;
 }
 
 .dropdown-menu li {
@@ -80,5 +120,48 @@ onUnmounted(() => {
 
 .dropdown-menu li:last-child {
   border-bottom: none;
+}
+
+.navbar-left h1 {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 2vw;
+}
+
+.admin {
+  color: gold;
+  font-size: 1vw;
+}
+
+.user-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.menu-icon {
+  display: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+
+  .menu-icon {
+    display: inline-flex;
+  }
+
+  .navbar-left h1{
+    font-size: 4vw;
+  }
+
+  .admin{
+    font-size: 3vw;
+  }
+
 }
 </style>

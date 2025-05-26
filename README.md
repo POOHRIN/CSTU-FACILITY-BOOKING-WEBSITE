@@ -37,3 +37,12 @@ npm run build
 ```sh
 npm run test:unit
 ```
+
+### Deploy
+
+```sh
+npm install -g serve
+```
+```sh
+serve -s dist
+```

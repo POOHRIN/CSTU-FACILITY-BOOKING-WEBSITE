@@ -72,7 +72,7 @@ const handleLogin = async () => {
 
 <template>
     <div class="login">
-        <h1>TU FACILITY BOOKING WEBSITE</h1>
+        <h1>CSTU FACILITY BOOKING WEBSITE</h1>
         <div class="login-box">
             <h2>LOGIN</h2>
             <form @submit.prevent="handleLogin" autocomplete="off">
